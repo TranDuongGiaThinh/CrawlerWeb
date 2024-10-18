@@ -1,3 +1,5 @@
+import 'package:crawler_web/views/admin/component/package_type_manager/package_type_manager_tab.dart';
+import 'package:crawler_web/views/admin/component/user_type_manager/user_type_manager_item.dart';
 import 'package:flutter/material.dart';
 
 class AdminScreen extends StatefulWidget {
@@ -10,6 +12,7 @@ class AdminScreen extends StatefulWidget {
 class _AdminScreenState extends State<AdminScreen>
     with SingleTickerProviderStateMixin {
   //late AdminPresenter presenter;
+  late TabController t;
 
   @override
   void initState() {
@@ -22,6 +25,7 @@ class _AdminScreenState extends State<AdminScreen>
     // presenter.tabController.addListener(() {
     //   presenter.message = "";
     // });
+    t = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -111,7 +115,7 @@ class _AdminScreenState extends State<AdminScreen>
           ],
         ),
         bottom: TabBar(
-          controller: null,
+          controller: t,
           tabs: const [
             Tab(
               child: Text(
@@ -147,10 +151,10 @@ class _AdminScreenState extends State<AdminScreen>
         ),
       ),
       body: TabBarView(
-        controller: null,
+        controller: t,
         children: [
-          // UserTypeAdminTab(presenter: presenter),
-          // PackageTypeAdminTab(presenter: presenter),
+          UserTypeAdminItem(),
+          PackageTypeAdminTab(),
           // DownloadAppAdminTab(presenter: presenter),
           // DownloadInstructionAdminTab(presenter: presenter),
           // ListUserAdminTab(presenter: presenter),

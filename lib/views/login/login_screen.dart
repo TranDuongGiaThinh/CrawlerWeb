@@ -1,3 +1,5 @@
+import 'package:crawler_web/global/global_data.dart';
+import 'package:crawler_web/presenters/user_presenter.dart';
 import 'package:flutter/material.dart';
 
 import 'component/login_form.dart';
@@ -29,6 +31,7 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Center(
         child: Container(
           decoration: BoxDecoration(
@@ -70,8 +73,8 @@ class _LoginScreenState extends State<LoginScreen>
               Expanded(
                 child: TabBarView(
                   controller: _tabController,
-                  children: const [
-                    LoginForm(),
+                  children: [
+                    LoginForm(userPresenter: userPresenter),
                     RegisterForm(),
                   ],
                 ),

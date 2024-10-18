@@ -59,6 +59,8 @@ class _UserTypeTabState extends State<UserTypeTab> {
     //           );
     //         },
     //       );
-    return Container();
+    return Container(
+      child: Text('Đăng Ký Thành Viên'),
+    );
   }
 }

@@ -1,27 +1,19 @@
+import 'package:crawler_web/global/global_data.dart';
+import 'package:crawler_web/presenters/user_presenter.dart';
 import 'package:flutter/material.dart';
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+  const LoginForm({super.key, required this.userPresenter});
+
+  final UserPresenter userPresenter;
 
   @override
   LoginFormState createState() => LoginFormState();
 }
 
 class LoginFormState extends State<LoginForm> {
-  //late LoginPresenter presenter;
-
-  @override
-  void initState() {
-    super.initState();
-
-    //presenter = LoginPresenter(reload: () {
-    //   setState(() {});
-    // });
-  }
-
   @override
   void dispose() {
-    //presenter.dispose();
     super.dispose();
   }
 
@@ -31,30 +23,33 @@ class LoginFormState extends State<LoginForm> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         TextField(
-          //controller: presenter.usernameController,
+          controller: widget.userPresenter.usernameController,
           decoration: const InputDecoration(labelText: 'Tên đăng nhập'),
         ),
         TextField(
-          //controller: presenter.passwordController,
+          controller: widget.userPresenter.passwordController,
           decoration: const InputDecoration(labelText: 'Mật khẩu'),
           obscureText: true,
         ),
-        // if (presenter.message.isNotEmpty)
-        //   Text(
-        //     presenter.message,
-        //     style: const TextStyle(color: Colors.red),
-        //   ),
+        if (widget.userPresenter.message.isNotEmpty)
+          Text(
+            widget.userPresenter.message,
+            style: const TextStyle(color: Colors.red),
+          ),
         const SizedBox(height: 20),
         ElevatedButton(
-          onPressed: () async {
-            //UserModel? user = await presenter.login();
-            // if (user != null) {
-            //   // Lưu user vào biến toàn cục
-            //   userLogin = user;
+          onPressed: () {
+            widget.userPresenter.login(() {
+              setState(() {});
+            }).then((user) => {
+              if (user != null) {
+                // Lưu user vào biến toàn cục
+                userLogin = user,
 
-              // Chuyển trang khi đang nhập thành công
-              Navigator.pushReplacementNamed(context, '/home');
-            // }
+                // Chuyển trang khi đang nhập thành công
+                Navigator.pushReplacementNamed(context, '/')
+              }
+            });
           },
           child: const Text('Đăng nhập'),
         ),

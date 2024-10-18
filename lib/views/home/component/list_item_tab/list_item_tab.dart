@@ -30,17 +30,19 @@ class ListItemTabState extends State<ListItemTab> {
     return Center(
       child: Container(
         padding: const EdgeInsets.all(16.0),
-        child: Container()//ListItemTabPresenter.items == null
-            // ? const CircularProgressIndicator()
-            // : Column(
-            //     children: [
-            //       //SearchBarWidget(presenter: presenter),
-            //       FilterPanel(presenter: presenter),
-            //       presenter.isLoading
-            //           ? const CircularProgressIndicator()
-            //           : ListItem(items: ListItemTabPresenter.items!),
-            //     ],
-            //   ),
+        child: Container(
+          child: Text("Kết Quả Thu Thập"),
+        ), //ListItemTabPresenter.items == null
+        // ? const CircularProgressIndicator()
+        // : Column(
+        //     children: [
+        //       //SearchBarWidget(presenter: presenter),
+        //       FilterPanel(presenter: presenter),
+        //       presenter.isLoading
+        //           ? const CircularProgressIndicator()
+        //           : ListItem(items: ListItemTabPresenter.items!),
+        //     ],
+        //   ),
       ),
     );
   }

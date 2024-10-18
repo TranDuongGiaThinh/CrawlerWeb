@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PackageTypeAdminItem extends StatelessWidget {
-  const PackageTypeAdminItem({
+class PackageTypeManagerItem extends StatelessWidget {
+  const PackageTypeManagerItem({
     super.key,
     // required this.item,
     // required this.presenter,

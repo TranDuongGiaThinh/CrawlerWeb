@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class UserTypeAdminItem extends StatelessWidget {
-  UserTypeAdminItem({
+class UserTypeAdminItem extends StatefulWidget {
+  const UserTypeAdminItem({
     super.key,
     // required this.item,
     // required this.presenter,
   });
 
-  // final UserTypeModel item;
-  // final AdminPresenter presenter;
+  @override
+  State<UserTypeAdminItem> createState() => _UserTypeAdminItemState();
+}
 
+class _UserTypeAdminItemState extends State<UserTypeAdminItem> {
+  // final UserTypeModel item;
   final NumberFormat currencyFormat = NumberFormat.currency(
     locale: 'vi_VN',
     symbol: 'VNĐ',

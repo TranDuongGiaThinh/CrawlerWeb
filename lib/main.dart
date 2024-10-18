@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const HomeScreen(),
         '/login': (context) => const LoginScreen(),
-        // '/admin': (context) => const AdminScreen(),
+        '/admin': (context) => const AdminScreen(),
       },
     );
   }
