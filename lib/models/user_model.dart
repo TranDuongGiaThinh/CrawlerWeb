@@ -25,7 +25,7 @@ class UserModel {
       email: json['email'] ?? '',
       phone: json['phone'] ?? '',
       locked: json['locked'],
-      isAdmin: json['is_admin'],
+      isAdmin: json['is_admin'] ?? false,
     );
   }
 }

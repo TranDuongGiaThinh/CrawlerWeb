@@ -7,10 +7,10 @@ const String baseURL = 'http://localhost:3001';
 
 // API endpoints
 const String checkLoginAPI = '$baseURL/user/check-login';
-const String checkUsernameExistsAPI = '$baseURL/api/user/check-username-exists/';
-const String createUserAPI = '$baseURL/api/user/create';
+const String checkUsernameExistsAPI = '$baseURL/user/check-username-exists/';
+const String createUserAPI = '$baseURL/user/register';
 
-const String getUserTypeAPI = '$baseURL/api/user-type/get/';
+const String getUserTypeAPI = '$baseURL/api/user-type/get/';//
 const String getUserTypeDefaultAPI = '$baseURL/api/user-type/get-default';
 const String getAllUserTypeAPI = '$baseURL/api/user-type/get-all';
 const String createUserTypeAPI = '$baseURL/api/user-type/create';

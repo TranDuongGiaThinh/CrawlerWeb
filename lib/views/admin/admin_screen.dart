@@ -2,6 +2,8 @@ import 'package:crawler_web/views/admin/component/package_type_manager/package_t
 import 'package:crawler_web/views/admin/component/user_type_manager/user_type_manager_item.dart';
 import 'package:flutter/material.dart';
 
+import '../../global/global_data.dart';
+
 class AdminScreen extends StatefulWidget {
   const AdminScreen({super.key});
 
@@ -70,7 +72,7 @@ class _AdminScreenState extends State<AdminScreen>
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Colors.grey,
+                    color: Colors.deepPurple,
                   ),
                 ),
                 const SizedBox(width: 8.0),
@@ -93,7 +95,7 @@ class _AdminScreenState extends State<AdminScreen>
                             TextButton(
                               child: const Text('Đăng xuất'),
                               onPressed: () {
-                                //userLogin = null;
+                                userLogin = null;
                                 Navigator.of(context).pop();
                                 Future.delayed(Duration.zero, () {
                                   Navigator.pushReplacementNamed(context, '/');
@@ -107,7 +109,7 @@ class _AdminScreenState extends State<AdminScreen>
                   },
                   child: const Icon(
                     Icons.logout_outlined,
-                    color: Colors.black54,
+                    color: Colors.deepPurple,
                   ),
                 ),
               ],

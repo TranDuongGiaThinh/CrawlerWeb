@@ -1,3 +1,4 @@
+import 'package:crawler_web/global/global_data.dart';
 import 'package:flutter/material.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -8,22 +9,6 @@ class RegisterForm extends StatefulWidget {
 }
 
 class RegisterFormState extends State<RegisterForm> {
-  //late RegistrationPresenter presenter;
-
-  @override
-  void initState() {
-    super.initState();
-    // presenter = RegistrationPresenter(reload: () {
-    //   setState(() {});
-    // });
-  }
-
-  @override
-  void dispose() {
-    //presenter.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -31,39 +16,43 @@ class RegisterFormState extends State<RegisterForm> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           TextField(
-            //controller: presenter.fullnameController,
+            controller: userPresenter.fullnameController,
             decoration: const InputDecoration(labelText: 'Họ và tên'),
           ),
           TextField(
-            //controller: presenter.usernameController,
+            controller: userPresenter.usernameController,
             decoration: const InputDecoration(labelText: 'Tên đăng nhập'),
           ),
           TextField(
-            //controller: presenter.passwordController,
+            controller: userPresenter.passwordController,
             decoration: const InputDecoration(labelText: 'Mật khẩu'),
             obscureText: true,
           ),
           TextField(
-            //controller: presenter.emailController,
+            controller: userPresenter.emailController,
             decoration: const InputDecoration(labelText: 'Email'),
           ),
           TextField(
-            //controller: presenter.phoneController,
+            controller: userPresenter.phoneController,
             decoration: const InputDecoration(labelText: 'Số điện thoại'),
           ),
-          // if (presenter.message.isNotEmpty)
-          //   Text(
-          //     presenter.message,
-          //     style: const TextStyle(color: Colors.red),
-          //   ),
+          if (userPresenter.message.isNotEmpty)
+            Text(
+              userPresenter.message,
+              style: const TextStyle(color: Colors.red),
+            ),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: () async {
-              // await presenter.register();
-              // if (userLogin != null) {
-                // Điều hướng đến màn hình chính
-                Navigator.pushReplacementNamed(context, '/home');
-              //}
+            onPressed: () {
+              userPresenter.register(() {
+                setState(() {});
+              }).then((user) {
+                if (user != null) {
+                  userLogin = user;
+
+                  Navigator.pushReplacementNamed(context, '/');
+                }
+              });
             },
             child: const Text('Đăng ký'),
           ),

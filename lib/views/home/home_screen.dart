@@ -108,13 +108,54 @@ class _HomeScreenState extends State<HomeScreen>
             padding: const EdgeInsets.only(right: 16.0),
             child: userLogin?.fullname != null
                 ? Center(
-                    child: Text(
-                      'Xin chào, ${userLogin!.fullname}',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.deepPurple,
-                      ),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Xin chào, ${userLogin!.fullname}',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.deepPurple,
+                          ),
+                        ),
+                        const SizedBox(width: 8.0),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Xác nhận đăng xuất'),
+                          content: const Text(
+                              'Bạn có chắc chắn muốn đăng xuất không?'),
+                          actions: <Widget>[
+                            TextButton(
+                              child: const Text('Hủy'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: const Text('Đăng xuất'),
+                              onPressed: () {
+                                userLogin = null;
+                                Navigator.of(context).pop();
+                                Future.delayed(Duration.zero, () {
+                                  Navigator.pushReplacementNamed(context, '/');
+                                });
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: const Icon(
+                    Icons.logout_outlined,
+                    color: Colors.deepPurple,
+                  ),
+                ),
+                      ],
                     ),
                   )
                 : TextButton(
