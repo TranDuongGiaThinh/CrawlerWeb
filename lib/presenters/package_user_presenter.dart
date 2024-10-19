@@ -9,10 +9,10 @@ import '../global/global_data.dart';
 class PackageUserPresenter {
   PackageUserPresenter();
 
-  Future<void> fetchPackageUserOfUser(int userId) async {
+  Future<void> getAllPackageUserOfUser(int userId) async {
     try {
       final response =
-          await http.get(Uri.parse("$getAllPackageUserOfUser$userId"));
+          await http.get(Uri.parse("$getAllPackageUserOfUserAPI$userId"));
 
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body)['package_users'];
@@ -73,8 +73,7 @@ class PackageUserPresenter {
     }
   }
 
-  Future<PackageUserModel?> createPackageUser(
-      int packageTypeId, int userTypeId, int totalPrice) async {
+  Future<PackageUserModel?> createPackageUser(PackageUserModel packageUser) async {
     try {
       final url = Uri.parse(creatPackageUserAPI);
 
@@ -82,10 +81,14 @@ class PackageUserPresenter {
         url,
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
-          "user_id": userLogin!.id,
-          "package_type_id": packageTypeId,
-          "user_type_id": userTypeId,
-          "total_price": totalPrice,
+          "user_id": packageUser.userId,
+          "user_type": packageUser.userType,
+          "renewal_package": packageUser.renewalPackage,
+          "days": packageUser.days,
+          "total_price": packageUser.totalPrice,
+          "max_auto_config": packageUser.maxAutoConfig,
+          "max_config": packageUser.maxConfig,
+          "max_export": packageUser.maxExport
         }),
       );
 

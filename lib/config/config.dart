@@ -27,8 +27,8 @@ const String deleteRenewalPackageAPI = '$baseURL/renewal-package/delete/';
 
 // Lịch sử đăng ký gói thành viên
 const String creatPackageUserAPI = '$baseURL/package-user/add';
-const String getAllPackageUserOfUser = '$baseURL/package-user/get-all-of-user/';
-const String getPackageUserIsUsingOfUser = '$baseURL/package-user/get-package-is-using/';
+const String getAllPackageUserOfUserAPI = '$baseURL/package-user/get-all-of-user/';
+const String getPackageUserIsUsingOfUserAPI = '$baseURL/package-user/get-package-is-using/';
 
 // Lấy thông tin cài đặt
 const String getSettingAPI = '$baseURL/api/setting/get';

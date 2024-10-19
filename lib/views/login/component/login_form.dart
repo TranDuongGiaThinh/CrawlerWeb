@@ -42,6 +42,7 @@ class LoginFormState extends State<LoginForm> {
               if (user != null) {
                 // Lưu user vào biến toàn cục
                 userLogin = user,
+                packageUserPresenter.getAllPackageUserOfUser(user.id),
 
                 // Chuyển trang khi đang nhập thành công
                 Navigator.pushReplacementNamed(context, '/')

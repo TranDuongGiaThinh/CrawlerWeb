@@ -24,7 +24,7 @@ class UserTypeItem extends StatelessWidget {
 
     return Container(
       width: MediaQuery.of(context).size.width * 0.3,
-      height: 250,
+      height: 300,
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
       child: Card(
         elevation: 3,
@@ -61,6 +61,7 @@ class UserTypeItem extends StatelessWidget {
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
+                      color: Colors.deepPurpleAccent,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -71,7 +72,17 @@ class UserTypeItem extends StatelessWidget {
                   const SizedBox(height: 4),
                   if (item.maxConfig > 0)
                     Text(
-                      '${item.maxConfig} cấu hình tối đa',
+                      '${item.maxConfig} lượt tạo cấu hình',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  if (item.maxAutoConfig > 0)
+                    Text(
+                      '${item.maxAutoConfig} cấu hình thu thập tự động',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  if (item.maxExport > 0)
+                    Text(
+                      '${item.maxExport} lượt xuất dữ liệu thu thập',
                       style: const TextStyle(fontSize: 16),
                     ),
                 ],
