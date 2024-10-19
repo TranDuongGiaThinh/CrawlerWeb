@@ -1,5 +1,4 @@
 import 'package:crawler_web/global/global_data.dart';
-import 'package:crawler_web/presenters/user_presenter.dart';
 import 'package:flutter/material.dart';
 
 import 'component/login_form.dart';
@@ -20,6 +19,12 @@ class _LoginScreenState extends State<LoginScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) {
+       userPresenter.cleanText();
+      }
+    });
   }
 
   @override
@@ -73,8 +78,8 @@ class _LoginScreenState extends State<LoginScreen>
               Expanded(
                 child: TabBarView(
                   controller: _tabController,
-                  children: [
-                    LoginForm(userPresenter: userPresenter),
+                  children: const [
+                    LoginForm(),
                     RegisterForm(),
                   ],
                 ),

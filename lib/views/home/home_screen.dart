@@ -73,12 +73,6 @@ class _HomeScreenState extends State<HomeScreen>
             ),
             Tab(
               child: Text(
-                'Kết Quả Thu Thập',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Tab(
-              child: Text(
                 'Gói Thành Viên',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -92,6 +86,12 @@ class _HomeScreenState extends State<HomeScreen>
             Tab(
               child: Text(
                 'Tải Xuống',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Tab(
+              child: Text(
+                'Kết Quả Thu Thập',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
@@ -183,10 +183,10 @@ class _HomeScreenState extends State<HomeScreen>
         controller: _tabController,
         children: const [
           IntroductionTab(),
-          ListItemTab(),
           UserTypeTab(),
           InstructionTab(),
           DownloadTab(),
+          ListItemTab(),
           UserTab(),
         ],
       ),

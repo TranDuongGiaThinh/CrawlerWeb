@@ -1,11 +1,8 @@
 import 'package:crawler_web/global/global_data.dart';
-import 'package:crawler_web/presenters/user_presenter.dart';
 import 'package:flutter/material.dart';
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({super.key, required this.userPresenter});
-
-  final UserPresenter userPresenter;
+  const LoginForm({super.key});
 
   @override
   LoginFormState createState() => LoginFormState();
@@ -23,23 +20,23 @@ class LoginFormState extends State<LoginForm> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         TextField(
-          controller: widget.userPresenter.usernameController,
+          controller: userPresenter.usernameController,
           decoration: const InputDecoration(labelText: 'Tên đăng nhập'),
         ),
         TextField(
-          controller: widget.userPresenter.passwordController,
+          controller: userPresenter.passwordController,
           decoration: const InputDecoration(labelText: 'Mật khẩu'),
           obscureText: true,
         ),
-        if (widget.userPresenter.message.isNotEmpty)
+        if (userPresenter.message.isNotEmpty)
           Text(
-            widget.userPresenter.message,
+            userPresenter.message,
             style: const TextStyle(color: Colors.red),
           ),
         const SizedBox(height: 20),
         ElevatedButton(
           onPressed: () {
-            widget.userPresenter.login(() {
+            userPresenter.login(() {
               setState(() {});
             }).then((user) => {
               if (user != null) {

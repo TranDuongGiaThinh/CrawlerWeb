@@ -6,25 +6,29 @@
 const String baseURL = 'http://localhost:3001';
 
 // API endpoints
+// Người dùng
 const String checkLoginAPI = '$baseURL/user/check-login';
 const String checkUsernameExistsAPI = '$baseURL/user/check-username-exists/';
 const String createUserAPI = '$baseURL/user/register';
 
-const String getUserTypeAPI = '$baseURL/api/user-type/get/';//
-const String getUserTypeDefaultAPI = '$baseURL/api/user-type/get-default';
-const String getAllUserTypeAPI = '$baseURL/api/user-type/get-all';
-const String createUserTypeAPI = '$baseURL/api/user-type/create';
-const String updateUserTypeAPI = '$baseURL/api/user-type/update';
+// Gói thành viên
+const String getAllUserTypeAPI = '$baseURL/user-type/get-all';
+const String checkUserTypeNameExistsAPI = '$baseURL/user-type/check-name-exists?';
+const String createUserTypeAPI = '$baseURL/user-type/add';
+const String updateUserTypeAPI = '$baseURL/user-type/update';
 const String deleteUserTypeAPI = '$baseURL/api/user-type/delete/';
 
-const String getPackageTypeAPI = '$baseURL/api/package-type/get/';
-const String getAllPackageTypeAPI = '$baseURL/api/package-type/get-all';
-const String createPackageTypeAPI = '$baseURL/api/package-type/create';
-const String updatePackageTypeAPI = '$baseURL/api/package-type/update';
-const String deletePackageTypeAPI = '$baseURL/api/package-type/delete/';
+// Gói gia hạn
+const String getAllRenewalPackageAPI = '$baseURL/renewal-package/get-all';
+const String checkRenewalPackageNameExixstAPI = '$baseURL/renewal-package/check-name-exists?';
+const String createRenewalPackageAPI = '$baseURL/renewal-package/add';
+const String updateRenewalPackageAPI = '$baseURL/renewal-package/update';
+const String deleteRenewalPackageAPI = '$baseURL/renewal-package/delete/';
 
-const String creatPackageUserAPI = '$baseURL/api/package-user/create';
-const String getAllUserPackageUserOfUser = '$baseURL/api/package-user/get-all-by-user-id/';
+// Lịch sử đăng ký gói thành viên
+const String creatPackageUserAPI = '$baseURL/package-user/add';
+const String getAllPackageUserOfUser = '$baseURL/package-user/get-all-of-user/';
+const String getPackageUserIsUsingOfUser = '$baseURL/package-user/get-package-is-using/';
 
 // Lấy thông tin cài đặt
 const String getSettingAPI = '$baseURL/api/setting/get';

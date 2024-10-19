@@ -13,6 +13,14 @@ class UserPresenter {
   final TextEditingController phoneController = TextEditingController();
   String message = '';
 
+  cleanText() {
+    usernameController.text = '';
+    passwordController.text = '';
+    fullnameController.text = '';
+    emailController.text = '';
+    phoneController.text = '';
+  }
+
   Future<UserModel?> login(Function reload) async {
     checkLoginInput(reload);
 
@@ -21,9 +29,9 @@ class UserPresenter {
       UserModel? user = await checkLogin(reload);
 
       return user;
-    } else {
-      return null;
     }
+    
+    return null;
   }
 
   checkLoginInput(Function reload) {

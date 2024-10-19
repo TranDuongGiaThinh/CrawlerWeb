@@ -1,3 +1,5 @@
+import 'package:crawler_web/global/global_data.dart';
+import 'package:crawler_web/views/home/component/user_type_tab/user_type_item.dart';
 import 'package:flutter/material.dart';
 
 class UserTypeTab extends StatefulWidget {
@@ -8,59 +10,47 @@ class UserTypeTab extends StatefulWidget {
 }
 
 class _UserTypeTabState extends State<UserTypeTab> {
-  // late UserTypePresenter presenter;
-  // PackageTypePresenter packageTypePresenter = PackageTypePresenter();
-
   @override
   void initState() {
     super.initState();
 
-    // presenter = UserTypePresenter(reload: () {
-    //   setState(() {});
-    // });
-
-    // packageTypePresenter.fetchPackageTypes().then((value) {
-    //   presenter.fetchUserTypes().then((value) {
-    //     setState(() {});
-    //   });
-    // });
+    userTypePresenter.getAllUserTypes().then((value) {
+      setState(() {
+        userTypes = value;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // PackageUserModel? packageUser = PackageUserPresenter.packageUserActive;
+    return userTypes.isEmpty
+        ? Center(child: Text(userTypePresenter.message))
+        : ListView.builder(
+            padding: const EdgeInsets.all(8.0),
+            itemCount: (userTypes.length / 3).ceil(),
+            itemBuilder: (context, rowIndex) {
+              final startIndex = rowIndex * 3;
+              final endIndex = startIndex + 3;
+              final rowItems = userTypes.sublist(
+                startIndex,
+                endIndex > userTypes.length ? userTypes.length : endIndex,
+              );
 
-    // return UserTypePresenter.userTypes.isEmpty
-    //     ? Center(child: Text(presenter.message))
-    //     : ListView.builder(
-    //         padding: const EdgeInsets.all(8.0),
-    //         itemCount: (UserTypePresenter.userTypes.length / 3).ceil(),
-    //         itemBuilder: (context, rowIndex) {
-    //           final startIndex = rowIndex * 3;
-    //           final endIndex = startIndex + 3;
-    //           final rowItems = UserTypePresenter.userTypes.sublist(
-    //             startIndex,
-    //             endIndex > UserTypePresenter.userTypes.length
-    //                 ? UserTypePresenter.userTypes.length
-    //                 : endIndex,
-    //           );
-
-    //           return Row(
-    //                mainAxisAlignment: MainAxisAlignment.center,
-    //             children: rowItems.map((userType) {
-    //               // return UserTypeItem(
-    //               //     item: userType,
-    //               //     packageUserActive: packageUser,
-    //               //     onClick: () {
-    //               //       presenter.onClickItem(
-    //               //           context, userType, packageTypePresenter);
-    //               //     });
-    //             }).toList(),
-    //           );
-    //         },
-    //       );
-    return Container(
-      child: Text('Đăng Ký Thành Viên'),
-    );
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: rowItems.map((userType) {
+                  return UserTypeItem(
+                    item: userType,
+                    checked: false,
+                    onClick: () {
+                      userTypePresenter.onClickItem(context, userType, () {
+                        setState(() {});
+                      });
+                    },
+                  );
+                }).toList(),
+              );
+            },
+          );
   }
 }
