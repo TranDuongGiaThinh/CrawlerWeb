@@ -19,23 +19,11 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  // PackageUserModel? packageUser;
-
-  updatePackageUser() {
-    // PackageUserPresenter.fetchPackageUserOfUser(userLogin!.id).then((value) {
-    //   packageUser = PackageUserPresenter.packageUserActive;
-    //   setState(() {});
-    // });
-  }
-
   @override
   void initState() {
     super.initState();
+    
     _tabController = TabController(length: 6, vsync: this);
-
-    if (userLogin != null) {
-      updatePackageUser();
-    }
   }
 
   @override

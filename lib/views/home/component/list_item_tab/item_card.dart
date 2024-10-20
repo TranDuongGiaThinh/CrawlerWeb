@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../../../models/item_model.dart';
+
 class ItemCard extends StatelessWidget {
-  const ItemCard({
-    super.key, 
-    // required this.item
-  });
-  // final ItemModel item;
+  const ItemCard({super.key, required this.item});
+
+  final ItemModel item;
 
   @override
   Widget build(BuildContext context) {
@@ -20,35 +20,35 @@ class ItemCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Text(
-                //   item.itemTypeName,
-                //   style: const TextStyle(
-                //     fontSize: 16,
-                //     color: Colors.deepPurpleAccent,
-                //   ),
-                // ),
-                // Text(
-                //   item.websiteName,
-                //   style: const TextStyle(
-                //       fontSize: 16, color: Colors.deepPurpleAccent),
-                // ),
+                Text(
+                  item.itemType,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.deepPurpleAccent,
+                  ),
+                ),
+                Text(
+                  item.website,
+                  style: const TextStyle(
+                      fontSize: 16, color: Colors.deepPurpleAccent),
+                ),
               ],
             ),
-            // const SizedBox(height: 4),
-            // Column(
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   children: item.itemDetails.map((detail) {
-            //     return Padding(
-            //       padding: const EdgeInsets.only(top: 4.0),
-            //       child: Text(
-            //         "${detail.name}: ${detail.value}",
-            //         style: const TextStyle(
-            //           fontSize: 14,
-            //         ),
-            //       ),
-            //     );
-            //   }).toList(),
-            // ),
+            const SizedBox(height: 4),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: item.itemDetails.map((detail) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: Text(
+                    "${detail.name}: ${detail.value}",
+                    style: const TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
           ],
         ),
       ),

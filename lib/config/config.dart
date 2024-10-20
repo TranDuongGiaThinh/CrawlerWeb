@@ -51,16 +51,22 @@ const String unlockUserAPI = '$baseURL/api/user/unlock/';
 const String updateInstructionFilePathAPI = '$baseURL/api/setting/update-file-instruction';
 
 // Items
-const String getAllItemOfUserAPI = '$baseURL/api/item/get-all-of-user/';
+const String getAllItemOfUserAPI = '$baseURL/item/get-all-item-of-user/';
+// /item/filter
+// /item/export/:user_id
+// /item/search/:user_id/:keyword
+// /item/get-search-suggestions/:user_id
+// /item/check-export-permission/:user_id
+
 
 // Lấy danh sách cấu hình của user
-const String getAllConfigOfUserAPI = '$baseURL/api/crawl-config/get-all-by-user-id/';
+const String getAllConfigOfUserAPI = '$baseURL/crawl-config/get-all-config-of-user/';
 
 // Lấy danh sách loại item của user
-const String getAllItemTypeOfUserAPI = '$baseURL/api/type/get-all-item-type-of-user/';
+const String getAllItemTypeOfUserAPI = '$baseURL/item-type/get-all-item-type-of-user/';
 
 // Lấy danh sách website của user
-const String getAllWebsiteOfUserAPI = '$baseURL/api/type/get-all-website-of-user/';
+const String getAllWebsiteOfUserAPI = '$baseURL/website/get-all-website-of-user/';
 
 // Lọc danh sách item
 // mẫu: http://localhost:3001/api/item/filter?user_id=1&type_id=1&website_id=1&config_id=null

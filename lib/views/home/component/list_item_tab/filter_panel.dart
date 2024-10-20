@@ -1,12 +1,12 @@
+import 'package:crawler_web/global/global_data.dart';
 import 'package:flutter/material.dart';
 import 'dart:js' as js;
 
-class FilterPanel extends StatefulWidget {
-  // final ListItemTabPresenter presenter;
+import '../../../../models/check_box_item.dart';
 
+class FilterPanel extends StatefulWidget {
   const FilterPanel({
-    super.key, 
-    // required this.presenter
+    super.key,
   });
 
   @override
@@ -14,6 +14,10 @@ class FilterPanel extends StatefulWidget {
 }
 
 class FilterPanelState extends State<FilterPanel> {
+  CheckBoxItem selectedItemType = itemTypeItems.first;
+  CheckBoxItem selectedWebsite = websiteItems.first;
+  CheckBoxItem selectedConfig = configItems.first;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -27,21 +31,21 @@ class FilterPanelState extends State<FilterPanel> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // _buildDropDown(
-              //   widget.presenter.itemTypes,
+              //   itemTypeItems,
               //   (CheckBoxItem? value) {
-              //     widget.presenter.setSelectedItemType(value);
+              //     setSelectedItemType(value);
               //   },
-              //   widget.presenter.selectedItemType ??
+              //   selectedItemType ??
               //       widget.presenter.itemTypes.first,
               // ),
               // const SizedBox(width: 4),
               // _buildDropDown(
-              //   widget.presenter.websites,
+              //   websiteItems,
               //   (CheckBoxItem? value) {
-              //     widget.presenter.setSelectedWebsite(value);
+              //     setSelectedWebsite(value);
               //   },
               //   widget.presenter.selectedWebsite ??
-              //       widget.presenter.websites.first,
+              //       websiteItems.first,
               // ),
               // const SizedBox(width: 4),
               // _buildDropDown(
@@ -85,23 +89,23 @@ class FilterPanelState extends State<FilterPanel> {
     );
   }
 
-  // Widget _buildDropDown(List<CheckBoxItem> items,
-  //     Function(CheckBoxItem?) onChanged, CheckBoxItem defaultValue) {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       DropdownButton<CheckBoxItem>(
-  //         value: defaultValue,
-  //         onChanged: onChanged,
-  //         items: items.map((item) {
-  //           return DropdownMenuItem<CheckBoxItem>(
-  //             value: item,
-  //             child: Text(item.name),
-  //           );
-  //         }).toList(),
-  //       ),
-  //       const SizedBox(height: 10),
-  //     ],
-  //   );
-  // }
+  Widget _buildDropDown(List<CheckBoxItem> items,
+      Function(CheckBoxItem?) onChanged, CheckBoxItem defaultValue) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        DropdownButton<CheckBoxItem>(
+          value: defaultValue,
+          onChanged: onChanged,
+          items: items.map((item) {
+            return DropdownMenuItem<CheckBoxItem>(
+              value: item,
+              child: Text(item.name),
+            );
+          }).toList(),
+        ),
+        const SizedBox(height: 10),
+      ],
+    );
+  }
 }
