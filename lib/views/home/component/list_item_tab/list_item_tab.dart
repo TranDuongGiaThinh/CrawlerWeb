@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../global/global_data.dart';
 import 'filter_panel.dart';
 import 'list_item.dart';
+import 'searchbar.dart';
 
 class ListItemTab extends StatefulWidget {
   const ListItemTab({super.key});
@@ -12,6 +13,21 @@ class ListItemTab extends StatefulWidget {
 }
 
 class ListItemTabState extends State<ListItemTab> {
+  @override
+  void initState() {
+    super.initState();
+
+    isLoading = true;
+
+    if (items.isEmpty && userLogin != null) {
+      itemPresenter.getAllItemOfUser(() {
+        setState(() {
+          isLoading = false;
+        });
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (userLogin == null) {
@@ -41,18 +57,33 @@ class ListItemTabState extends State<ListItemTab> {
           ),
         ),
       );
-    }
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        child: const Column(
-          children: [
-            //SearchBarWidget(presenter: presenter),
-            FilterPanel(),
-            ListItem(),
-          ],
+    } else {
+      return Center(
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              SearchBarWidget(reload: () {
+                setState(() {});
+              }),
+              FilterPanel(
+                reload: () {
+                  setState(() {});
+                },
+              ),
+              isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : items.isEmpty
+                      ? const Center(
+                          child: Text(
+                            "Không tìm thấy dữ liệu thu thập!",
+                          ),
+                        )
+                      : const ListItem(),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }

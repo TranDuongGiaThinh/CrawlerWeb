@@ -1,4 +1,5 @@
 import 'package:crawler_web/global/global_data.dart';
+import 'package:crawler_web/presenters/item_presenter.dart';
 import 'package:flutter/material.dart';
 import 'dart:js' as js;
 
@@ -7,17 +8,16 @@ import '../../../../models/check_box_item.dart';
 class FilterPanel extends StatefulWidget {
   const FilterPanel({
     super.key,
+    required this.reload,
   });
+
+  final Function reload;
 
   @override
   FilterPanelState createState() => FilterPanelState();
 }
 
 class FilterPanelState extends State<FilterPanel> {
-  CheckBoxItem selectedItemType = itemTypeItems.first;
-  CheckBoxItem selectedWebsite = websiteItems.first;
-  CheckBoxItem selectedConfig = configItems.first;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -30,38 +30,64 @@ class FilterPanelState extends State<FilterPanel> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // _buildDropDown(
-              //   itemTypeItems,
-              //   (CheckBoxItem? value) {
-              //     setSelectedItemType(value);
-              //   },
-              //   selectedItemType ??
-              //       widget.presenter.itemTypes.first,
-              // ),
-              // const SizedBox(width: 4),
-              // _buildDropDown(
-              //   websiteItems,
-              //   (CheckBoxItem? value) {
-              //     setSelectedWebsite(value);
-              //   },
-              //   widget.presenter.selectedWebsite ??
-              //       websiteItems.first,
-              // ),
-              // const SizedBox(width: 4),
-              // _buildDropDown(
-              //   widget.presenter.configs,
-              //   (CheckBoxItem? value) {
-              //     widget.presenter.setSelectedConfig(value);
-              //   },
-              //   widget.presenter.selectedConfig ??
-              //       widget.presenter.configs.first,
-              // ),
+              _buildDropDown(
+                itemTypeItems,
+                (CheckBoxItem? value) {
+                  itemPresenter.setSelectedItemType(value, () {
+                    widget.reload();
+                  });
+                },
+                itemPresenter.selectedItemType ?? itemTypeItems.first,
+              ),
+              const SizedBox(width: 4),
+              _buildDropDown(
+                websiteItems,
+                (CheckBoxItem? value) {
+                  itemPresenter.setSelectedWebsite(value, () {
+                    widget.reload();
+                  });
+                },
+                itemPresenter.selectedWebsite ?? websiteItems.first,
+              ),
+              const SizedBox(width: 4),
+              _buildDropDown(
+                configItems,
+                (CheckBoxItem? value) {
+                  itemPresenter.setSelectedConfig(value, () {
+                    widget.reload();
+                  });
+                },
+                itemPresenter.selectedConfig ?? configItems.first,
+              ),
             ],
           ),
           ElevatedButton(
             onPressed: () {
-              // js.context.callMethod(
-              //     'open', [widget.presenter.getExportFileJsonAPI()]);
+              itemPresenter.checkExportPremission().then((checkResult) {
+                if (checkResult) {
+                  js.context.callMethod(
+                      'open', [itemPresenter.getExportFileJsonAPI()]);
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Xuất file thất bại'),
+                        content: const Text(
+                            'Bạn không có quyền xuất dữ liệu này.'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('Xác nhận'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+              });
             },
             style: ButtonStyle(
               padding: WidgetStateProperty.all<EdgeInsets>(

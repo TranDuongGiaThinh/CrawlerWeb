@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 
-class SearchBarWidget extends StatelessWidget {
-  // final ListItemTabPresenter presenter;
-
+class SearchBarWidget extends StatefulWidget {
   const SearchBarWidget({
     super.key,
-    // required this.presenter,
+    required this.reload,
   });
 
+  final Function reload;
+
+  @override
+  State<SearchBarWidget> createState() => _SearchBarWidgetState();
+}
+
+class _SearchBarWidgetState extends State<SearchBarWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,14 +27,14 @@ class SearchBarWidget extends StatelessWidget {
                   border: OutlineInputBorder(),
                 ),
                 onChanged: (value) {
-                  //presenter.search(value);
+                  // itemPresenter.getSuggestions();
                 },
               ),
             ),
             const SizedBox(width: 8),
             ElevatedButton(
               onPressed: () {
-                // presenter.performSearch();
+                // itemPresenter.search();
               },
               style: ButtonStyle(
                 backgroundColor:

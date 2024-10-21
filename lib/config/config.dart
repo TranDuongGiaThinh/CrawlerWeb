@@ -52,12 +52,11 @@ const String updateInstructionFilePathAPI = '$baseURL/api/setting/update-file-in
 
 // Items
 const String getAllItemOfUserAPI = '$baseURL/item/get-all-item-of-user/';
-// /item/filter
-// /item/export/:user_id
-// /item/search/:user_id/:keyword
-// /item/get-search-suggestions/:user_id
-// /item/check-export-permission/:user_id
 
+// /item/export/:user_id
+// /item/check-export-permission/:user_id
+const String searchItemAPI = '$baseURL/item/search/:user_id/';
+const String getSearchSuggestionsAPI = '$baseURL/item/get-search-suggestions/';
 
 // Lấy danh sách cấu hình của user
 const String getAllConfigOfUserAPI = '$baseURL/crawl-config/get-all-config-of-user/';
@@ -69,8 +68,8 @@ const String getAllItemTypeOfUserAPI = '$baseURL/item-type/get-all-item-type-of-
 const String getAllWebsiteOfUserAPI = '$baseURL/website/get-all-website-of-user/';
 
 // Lọc danh sách item
-// mẫu: http://localhost:3001/api/item/filter?user_id=1&type_id=1&website_id=1&config_id=null
-const String filterItemApi = '$baseURL/api/item/filter?';
+// mẫu: http://localhost:3001//item/filter/2?config_id=7&type_id=1&website_id=1
+const String filterItemApi = '$baseURL/item/filter/';
 
 // Xuất file json cho các sản phẩm hiện tại
-const String exportFileJsonAPI = '$baseURL/api/item/export-file-json?';
+const String exportFileJsonAPI = '$baseURL/item/export/';

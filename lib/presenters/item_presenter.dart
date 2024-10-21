@@ -10,11 +10,11 @@ import '../models/check_box_item.dart';
 import '../models/item_model.dart';
 
 class ItemPresenter {
-  bool isLoading = false;
-
   CheckBoxItem? selectedConfig;
   CheckBoxItem? selectedItemType;
   CheckBoxItem? selectedWebsite;
+
+  List<String> searchSuggestions = [];
 
   ItemPresenter();
 
@@ -102,49 +102,61 @@ class ItemPresenter {
 
   void setSelectedConfig(
     CheckBoxItem? config,
-    Function(bool) reload,
+    Function reload,
   ) {
     if (isLoading) return;
     selectedConfig = config;
-    filterItems(reload);
+    isLoading = true;
+    reload();
+    filterItems().then((value) {
+      isLoading = false;
+      reload();
+    });
   }
 
   void setSelectedItemType(
     CheckBoxItem? itemType,
-    Function(bool) reload,
+    Function reload,
   ) {
     if (isLoading) return;
     selectedItemType = itemType;
-    filterItems(reload);
+    isLoading = true;
+    reload();
+    filterItems().then((value) {
+      isLoading = false;
+      reload();
+    });
   }
 
   void setSelectedWebsite(
     CheckBoxItem? website,
-    Function(bool) reload,
+    Function reload,
   ) {
     if (isLoading) return;
     selectedWebsite = website;
-    filterItems(reload);
+    isLoading = true;
+    reload();
+    filterItems().then((value) {
+      isLoading = false;
+      reload();
+    });
   }
 
-  filterItems(Function(bool) reload) async {
-    reload(true);
+  filterItems() async {
     try {
       final queryParams = {
-        "user_id": userLogin!.id.toString(),
         "type_id": selectedItemType?.id.toString() ?? "null",
         "website_id": selectedWebsite?.id.toString() ?? "null",
         "config_id": selectedConfig?.id.toString() ?? "null",
       };
 
-      final uri =
-          Uri.parse(filterItemApi).replace(queryParameters: queryParams);
+      final uri = Uri.parse('$filterItemApi${userLogin!.id}?')
+          .replace(queryParameters: queryParams);
       final response = await http.get(uri);
 
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body)['items'];
         items = data.map((json) => ItemModel.fromJson(json)).toList();
-        reload(false);
       } else {
         if (kDebugMode) {
           print('Lỗi tải dữ liệu: ${response.statusCode}');
@@ -157,23 +169,62 @@ class ItemPresenter {
     }
   }
 
+  Future<bool> checkExportPremission() async {
+    try {
+      // final queryParams = {
+      //   "type_id": selectedItemType?.id.toString() ?? "null",
+      //   "website_id": selectedWebsite?.id.toString() ?? "null",
+      //   "config_id": selectedConfig?.id.toString() ?? "null",
+      // };
+
+      // final uri = Uri.parse('$exportFileJsonAPI${userLogin!.id}?')
+      //     .replace(queryParameters: queryParams);
+      const a= 0;
+      return true;
+    } catch (error) {
+      if (kDebugMode) {
+        print(error);
+      }
+      return false;
+    }
+  }
+
   String getExportFileJsonAPI() {
     try {
       final queryParams = {
-        "user_id": userLogin!.id.toString(),
         "type_id": selectedItemType?.id.toString() ?? "null",
         "website_id": selectedWebsite?.id.toString() ?? "null",
         "config_id": selectedConfig?.id.toString() ?? "null",
       };
 
-      final uri =
-          Uri.parse(exportFileJsonAPI).replace(queryParameters: queryParams);
+      final uri = Uri.parse('$exportFileJsonAPI${userLogin!.id}?')
+          .replace(queryParameters: queryParams);
       return uri.toString();
     } catch (error) {
       if (kDebugMode) {
         print(error);
       }
       return "";
+    }
+  }
+
+  getSearchSuggestion(
+    String key,
+    Function reload,
+  ) async {
+    final queryParams = {"keyword": key};
+    final response = await http.get(
+        Uri.parse('$getSearchSuggestionsAPI/${userLogin!.id}?')
+            .replace(queryParameters: queryParams));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data =
+          json.decode(response.body)['search_suggestions'];
+      searchSuggestions = data.map((e) => e.toString()).toList();
+    } else {
+      if (kDebugMode) {
+        print('Lỗi tải dữ liệu $key: ${response.statusCode}');
+      }
     }
   }
 }
