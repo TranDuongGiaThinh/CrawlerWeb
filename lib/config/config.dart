@@ -34,7 +34,7 @@ const String getPackageUserIsUsingOfUserAPI = '$baseURL/package-user/get-package
 const String getSettingAPI = '$baseURL/api/setting/get';
 
 // Download C# app
-const String downloadAppAPI = '$baseURL//setting/download-app';
+const String downloadAppAPI = '$baseURL/setting/download-app';
 
 // Cập nhật file C#
 const String updateAppFilePathAPI = '$baseURL/api/setting/update-file-app';

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:js' as js;
+
+import '../../../../config/config.dart';
 
 class InstructionTab extends StatefulWidget {
   const InstructionTab({super.key});
@@ -36,7 +39,7 @@ class _InstructionTabState extends State<InstructionTab> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    //js.context.callMethod('open', [downloadInstructionAPI]);
+                    js.context.callMethod('open', [downloadInstructionAPI]);
                   },
                   style: ButtonStyle(
                     padding: WidgetStateProperty.all<EdgeInsets>(

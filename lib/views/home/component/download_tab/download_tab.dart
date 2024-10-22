@@ -1,5 +1,8 @@
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:js' as js;
 import 'package:flutter/material.dart';
+
+import '../../../../config/config.dart';
 
 class DownloadTab extends StatefulWidget {
   const DownloadTab({super.key});
@@ -37,7 +40,7 @@ class _DownloadTabState extends State<DownloadTab> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    //js.context.callMethod('open', [downloadAppAPI]);
+                    js.context.callMethod('open', [downloadAppAPI]);
                   },
                   style: ButtonStyle(
                     padding: WidgetStateProperty.all<EdgeInsets>(
