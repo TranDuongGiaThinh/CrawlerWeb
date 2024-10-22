@@ -66,20 +66,47 @@ class ListItemTabState extends State<ListItemTab> {
               SearchBarWidget(reload: () {
                 setState(() {});
               }),
-              FilterPanel(
-                reload: () {
-                  setState(() {});
-                },
-              ),
-              isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : items.isEmpty
-                      ? const Center(
-                          child: Text(
-                            "Không tìm thấy dữ liệu thu thập!",
+              if (!itemPresenter.onSearch)
+                FilterPanel(
+                  reload: () {
+                    setState(() {});
+                  },
+                ),
+              if (!itemPresenter.onSearch)
+                isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : items.isEmpty
+                        ? const Center(
+                            child: Text(
+                              "Không tìm thấy dữ liệu thu thập!",
+                            ),
+                          )
+                        : const ListItem(),
+              itemPresenter.onSearch
+                  ? isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : Expanded(
+                          child: ListView.builder(
+                            itemCount: itemPresenter.searchSuggestions.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: Text(
+                                    itemPresenter.searchSuggestions[index]),
+                                onTap: () {
+                                  itemPresenter.searchController.text =
+                                      itemPresenter.searchSuggestions[index];
+                                  setState(() {
+                                    itemPresenter.onSearch = false;
+                                  });
+                                  itemPresenter.search(() {
+                                    setState(() {});
+                                  });
+                                },
+                              );
+                            },
                           ),
                         )
-                      : const ListItem(),
+                  : Container(),
             ],
           ),
         ),

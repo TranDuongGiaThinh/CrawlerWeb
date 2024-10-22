@@ -34,13 +34,13 @@ const String getPackageUserIsUsingOfUserAPI = '$baseURL/package-user/get-package
 const String getSettingAPI = '$baseURL/api/setting/get';
 
 // Download C# app
-const String downloadAppAPI = '$baseURL/api/download-app';
+const String downloadAppAPI = '$baseURL//setting/download-app';
 
 // Cập nhật file C#
 const String updateAppFilePathAPI = '$baseURL/api/setting/update-file-app';
 
 // Download file hướng dẫn
-const String downloadInstructionAPI = '$baseURL/api/download-instruction';
+const String downloadInstructionAPI = '$baseURL/setting/download-instruction';
 
 // lấy danh sách user
 const String getAllUserAPI = '$baseURL/api/user/get-all';
@@ -52,11 +52,11 @@ const String updateInstructionFilePathAPI = '$baseURL/api/setting/update-file-in
 
 // Items
 const String getAllItemOfUserAPI = '$baseURL/item/get-all-item-of-user/';
-
-// /item/export/:user_id
-// /item/check-export-permission/:user_id
-const String searchItemAPI = '$baseURL/item/search/:user_id/';
+const String checkExportPremissionAPI = '$baseURL/item/check-export-permission/';
+const String searchItemAPI = '$baseURL/item/search/';
 const String getSearchSuggestionsAPI = '$baseURL/item/get-search-suggestions/';
+const String exportFileJsonAPI = '$baseURL/item/export/';
+const String filterItemAPI = '$baseURL/item/filter/';
 
 // Lấy danh sách cấu hình của user
 const String getAllConfigOfUserAPI = '$baseURL/crawl-config/get-all-config-of-user/';
@@ -66,10 +66,3 @@ const String getAllItemTypeOfUserAPI = '$baseURL/item-type/get-all-item-type-of-
 
 // Lấy danh sách website của user
 const String getAllWebsiteOfUserAPI = '$baseURL/website/get-all-website-of-user/';
-
-// Lọc danh sách item
-// mẫu: http://localhost:3001//item/filter/2?config_id=7&type_id=1&website_id=1
-const String filterItemApi = '$baseURL/item/filter/';
-
-// Xuất file json cho các sản phẩm hiện tại
-const String exportFileJsonAPI = '$baseURL/item/export/';

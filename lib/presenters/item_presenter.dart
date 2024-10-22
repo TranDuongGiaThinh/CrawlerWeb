@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:crawler_web/models/item_type_model.dart';
 import 'package:crawler_web/models/website_model.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../config/config.dart';
@@ -15,6 +16,8 @@ class ItemPresenter {
   CheckBoxItem? selectedWebsite;
 
   List<String> searchSuggestions = [];
+  TextEditingController searchController = TextEditingController();
+  bool onSearch = false;
 
   ItemPresenter();
 
@@ -150,7 +153,7 @@ class ItemPresenter {
         "config_id": selectedConfig?.id.toString() ?? "null",
       };
 
-      final uri = Uri.parse('$filterItemApi${userLogin!.id}?')
+      final uri = Uri.parse('$filterItemAPI${userLogin!.id}?')
           .replace(queryParameters: queryParams);
       final response = await http.get(uri);
 
@@ -171,16 +174,18 @@ class ItemPresenter {
 
   Future<bool> checkExportPremission() async {
     try {
-      // final queryParams = {
-      //   "type_id": selectedItemType?.id.toString() ?? "null",
-      //   "website_id": selectedWebsite?.id.toString() ?? "null",
-      //   "config_id": selectedConfig?.id.toString() ?? "null",
-      // };
+      final response = await http
+          .get(Uri.parse('$checkExportPremissionAPI${userLogin!.id}'));
 
-      // final uri = Uri.parse('$exportFileJsonAPI${userLogin!.id}?')
-      //     .replace(queryParameters: queryParams);
-      const a= 0;
-      return true;
+      if (response.statusCode == 200) {
+        final bool checkResult = json.decode(response.body)['check_result'];
+        return checkResult;
+      } else {
+        if (kDebugMode) {
+          print('Lỗi khi kiểm tra quyền xuất file: ${response.statusCode}');
+        }
+        return false;
+      }
     } catch (error) {
       if (kDebugMode) {
         print(error);
@@ -212,19 +217,66 @@ class ItemPresenter {
     String key,
     Function reload,
   ) async {
-    final queryParams = {"keyword": key};
-    final response = await http.get(
-        Uri.parse('$getSearchSuggestionsAPI/${userLogin!.id}?')
-            .replace(queryParameters: queryParams));
+    try {
+      if (isLoading == true) return;
+      isLoading = true;
+      final queryParams = {"keyword": key};
+      final uri = Uri.parse('$getSearchSuggestionsAPI${userLogin!.id}?')
+          .replace(queryParameters: queryParams);
+      final response = await http.get(uri);
 
-    if (response.statusCode == 200) {
-      final List<dynamic> data =
-          json.decode(response.body)['search_suggestions'];
-      searchSuggestions = data.map((e) => e.toString()).toList();
-    } else {
-      if (kDebugMode) {
-        print('Lỗi tải dữ liệu $key: ${response.statusCode}');
+      if (response.statusCode == 200) {
+        final List<dynamic> data =
+            json.decode(response.body)['search_suggestions'];
+        searchSuggestions = data.map((e) => e.toString()).toList();
+      } else {
+        if (kDebugMode) {
+          print('Lỗi tải dữ liệu $key: ${response.statusCode}');
+        }
       }
+
+      isLoading = false;
+      reload();
+    } catch (e) {
+      items = [];
+      if (kDebugMode) {
+        print(e);
+      }
+
+      isLoading = false;
+      reload();
+    }
+  }
+
+  search(Function reload) async {
+    try {
+      if (isLoading == true) return;
+      isLoading = true;
+      final response = await http.get(
+          Uri.parse("$searchItemAPI${userLogin!.id}/${searchController.text}"));
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body)['items'];
+        items = data.map((json) => ItemModel.fromJson(json)).toList();
+        reload();
+      } else {
+        items = [];
+        if (kDebugMode) {
+          print(
+              'Lỗi khi tìm kiếm items bằng từ khóa: ${json.decode(response.body)['error']}');
+        }
+      }
+
+      isLoading = false;
+      reload();
+    } catch (error) {
+      items = [];
+      if (kDebugMode) {
+        print(error);
+      }
+
+      isLoading = false;
+      reload();
     }
   }
 }

@@ -1,6 +1,6 @@
 import 'package:crawler_web/global/global_data.dart';
-import 'package:crawler_web/presenters/item_presenter.dart';
 import 'package:flutter/material.dart';
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:js' as js;
 
 import '../../../../models/check_box_item.dart';
@@ -74,7 +74,7 @@ class FilterPanelState extends State<FilterPanel> {
                       return AlertDialog(
                         title: const Text('Xuất file thất bại'),
                         content: const Text(
-                            'Bạn không có quyền xuất dữ liệu này.'),
+                            'Bạn không có quyền xuất dữ liệu!'),
                         actions: <Widget>[
                           TextButton(
                             onPressed: () {
