@@ -57,3 +57,24 @@ UserTypePresenter userTypePresenter = UserTypePresenter();
 PackageUserPresenter packageUserPresenter = PackageUserPresenter();
 RenewalPackagePresenter renewalPackagePresenter = RenewalPackagePresenter();
 ItemPresenter itemPresenter = ItemPresenter();
+
+// Hàm reset các biến toàn cục
+cleanDataOfUser() {
+  isLoading = false;
+  userLogin = null;
+  userTypes = [];
+  packageUserIsUsing = null;
+  packageUsers = [];
+  renewalPackages = [];
+  items = [];
+  itemTypes = [];
+  websites = [];
+  configItems = [CheckBoxItem(id: null, name: "Chọn cấu hình")];
+  itemTypeItems = [CheckBoxItem(id: null, name: "Chọn chủ đề")];
+  websiteItems = [CheckBoxItem(id: null, name: "Chọn website")];
+  userPresenter = UserPresenter();
+  userTypePresenter = UserTypePresenter();
+  packageUserPresenter = PackageUserPresenter();
+  renewalPackagePresenter = RenewalPackagePresenter();
+  itemPresenter = ItemPresenter();
+}

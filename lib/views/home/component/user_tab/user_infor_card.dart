@@ -1,12 +1,9 @@
+import 'package:crawler_web/global/global_data.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class UserInforCard extends StatelessWidget {
-  const UserInforCard({
-    super.key, 
-    // required this.presenter
-  });
-  // final UserTabPresenter presenter;
+  const UserInforCard({super.key});
 
   String formatDate(DateTime date) {
     final DateFormat formatter = DateFormat('dd/MM/yyyy');
@@ -22,89 +19,44 @@ class UserInforCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Text(
-                //   presenter.user.fullname,
-                //   style: const TextStyle(
-                //     fontSize: 24,
-                //     fontWeight: FontWeight.bold,
-                //     color: Colors.deepPurple,
-                //   ),
-                // ),
-                GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('Xác nhận đăng xuất'),
-                            content: const Text(
-                                'Bạn có chắc chắn muốn đăng xuất không?'),
-                            actions: <Widget>[
-                              TextButton(
-                                child: const Text('Hủy'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                              TextButton(
-                                child: const Text('Đăng xuất'),
-                                onPressed: () {
-                                  // userLogin = null;
-                                  // PackageUserPresenter.packageUserActive = null;
-                                  // PackageUserPresenter.packageUsers = [];
-                                  // ListItemTabPresenter.items = null;
-                                  // Future.delayed(Duration.zero, () {
-                                  //   Navigator.pushReplacementNamed(
-                                  //       context, '/');
-                                  // });
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    child: const Icon(
-                      Icons.logout,
-                      color: Colors.grey,
-                    )),
-              ],
+            Text(
+              userLogin!.fullname,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurple,
+              ),
             ),
             const SizedBox(height: 8),
-            // Text(
-            //   'Email: ${presenter.user.email.substring(0, 2)}***${presenter.user.email.substring(presenter.user.email.length - 2)}',
-            //   style: const TextStyle(fontSize: 16),
-            // ),
-            // const SizedBox(height: 8),
-            // Text(
-            //   'Số điện thoại: ${presenter.user.phone.substring(0, 2)}***${presenter.user.phone.substring(presenter.user.phone.length - 2)}',
-            //   style: const TextStyle(fontSize: 16),
-            // ),
-            // const SizedBox(height: 8),
-            // Text(
-            //   'Gói thành viên: ${presenter.userType?.type}',
-            //   style: const TextStyle(fontSize: 16),
-            // ),
-            // const SizedBox(height: 8),
-            // Text(
-            //   'Số lượng cấu hình đã tạo trong tháng: ${presenter.packageUserActive != null ? presenter.packageUserActive!.configCount : 0}',
-            //   style: const TextStyle(fontSize: 16),
-            // ),
-            // if (presenter.userType != null) const SizedBox(height: 8),
-            // if (presenter.userType != null)
-            //   Text(
-            //     'Số lượng cấu hình tối đa trong tháng: ${presenter.userType!.maxConfigs}',
-            //     style: const TextStyle(fontSize: 16),
-            //   ),
-            // if (presenter.outDate != null) const SizedBox(height: 8),
-            // if (presenter.outDate != null)
-            //   Text(
-            //     'Ngày hết hạn của gói: ${formatDate(presenter.outDate!)}',
-            //     style: const TextStyle(fontSize: 16),
-            //   ),
+            Text(
+              'Email: ${userLogin!.email.substring(0, 2)}***${userLogin!.email.substring(userLogin!.email.length - 2)}',
+              style: const TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Số điện thoại: ${userLogin!.phone.substring(0, 2)}***${userLogin!.phone.substring(userLogin!.phone.length - 2)}',
+              style: const TextStyle(fontSize: 16),
+            ),
+            if (packageUserIsUsing != null) const SizedBox(height: 8),
+            if (packageUserIsUsing != null) Text(
+              'Gói thành viên: ${packageUserIsUsing?.userType}',
+              style: const TextStyle(fontSize: 16),
+            ),
+            if (packageUserIsUsing != null) const SizedBox(height: 8),
+            if (packageUserIsUsing != null) Text(
+              'Số cấu hình thu thập tự động: ${userLogin!.autoConfigCount}/${packageUserIsUsing?.maxAutoConfig}',
+              style: const TextStyle(fontSize: 16),
+            ),
+            if (packageUserIsUsing != null) const SizedBox(height: 8),
+            if (packageUserIsUsing != null) Text(
+              'Số lượng cấu hình trong tháng: ${userLogin!.configCount}/${packageUserIsUsing?.maxConfig}',
+              style: const TextStyle(fontSize: 16),
+            ),
+            if (packageUserIsUsing != null) const SizedBox(height: 8),
+            if (packageUserIsUsing != null) Text(
+              'Số lần xuất dữ liệu trong tháng: ${userLogin!.exportCount}/${packageUserIsUsing?.maxExport}',
+              style: const TextStyle(fontSize: 16),
+            ),
           ],
         ),
       ),

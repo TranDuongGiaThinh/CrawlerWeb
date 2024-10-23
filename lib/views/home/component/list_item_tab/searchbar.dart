@@ -36,7 +36,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
                     },
                     onTap: () {
                       itemPresenter.onSearch = true;
-                      itemPresenter.getSearchSuggestion('', widget.reload);
+                      itemPresenter.getSearchSuggestion(itemPresenter.searchController.text, widget.reload);
                     },
                   ),
                 ),

@@ -1,7 +1,6 @@
 import 'package:crawler_web/global/global_data.dart';
 import 'package:crawler_web/views/home/component/introduction_tab/introduction_tab.dart';
 import 'package:flutter/material.dart';
-
 import 'component/download_tab/download_tab.dart';
 import 'component/instruction_tab/instruction_tab.dart';
 import 'component/list_item_tab/list_item_tab.dart';
@@ -22,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    
+
     _tabController = TabController(length: 6, vsync: this);
   }
 
@@ -107,42 +106,46 @@ class _HomeScreenState extends State<HomeScreen>
                           ),
                         ),
                         const SizedBox(width: 8.0),
-                GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text('Xác nhận đăng xuất'),
-                          content: const Text(
-                              'Bạn có chắc chắn muốn đăng xuất không?'),
-                          actions: <Widget>[
-                            TextButton(
-                              child: const Text('Hủy'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
+                        GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Xác nhận đăng xuất'),
+                                  content: const Text(
+                                      'Bạn có chắc chắn muốn đăng xuất không?'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: const Text('Hủy'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: const Text('Đăng xuất'),
+                                      onPressed: () {
+                                        // Xóa hết thông tin đăng nhập
+                                        cleanDataOfUser();
+
+                                        // Chuyển về tra chủ
+                                        Navigator.of(context).pop();
+                                        Future.delayed(Duration.zero, () {
+                                          Navigator.pushReplacementNamed(
+                                              context, '/');
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                );
                               },
-                            ),
-                            TextButton(
-                              child: const Text('Đăng xuất'),
-                              onPressed: () {
-                                userLogin = null;
-                                Navigator.of(context).pop();
-                                Future.delayed(Duration.zero, () {
-                                  Navigator.pushReplacementNamed(context, '/');
-                                });
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  child: const Icon(
-                    Icons.logout_outlined,
-                    color: Colors.deepPurple,
-                  ),
-                ),
+                            );
+                          },
+                          child: const Icon(
+                            Icons.logout_outlined,
+                            color: Colors.deepPurple,
+                          ),
+                        ),
                       ],
                     ),
                   )

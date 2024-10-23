@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../../../global/global_data.dart';
+import 'package_user_item.dart';
+import 'user_infor_card.dart';
 
 class UserTab extends StatefulWidget {
   const UserTab({super.key});
@@ -8,105 +11,95 @@ class UserTab extends StatefulWidget {
 }
 
 class _UserTabState extends State<UserTab> {
-  //late UserTabPresenter presenter;
-
-  @override
-  void initState() {
-    super.initState();
-
-    reload();
-  }
-
-  reload() {
-    // presenter = UserTabPresenter(
-    //   user: userLogin!,
-    //   reload: () {
-    //     setState(() {});
-    //   },
-    // );
-
-    // presenter.loadPackageUserOfUser().then((onValue) {
-    //   setState(() {});
-    // });
-  }
-
   @override
   Widget build(BuildContext context) {
-    // if (presenter.userType == null) return Container();
-    // if (presenter.user.id != userLogin!.id) reload();
-    return Center(
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+    if (userLogin == null) {
+      return Center(
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          width: 500,
+          height: 600,
+          child: const Card(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    color: Colors.deepPurpleAccent,
+                    size: 100,
+                  ),
+                  SizedBox(height: 8),
+                  Text("Bạn cần đăng nhập để sử dụng tính năng này!"),
+                ],
+              ),
+            ),
+          ),
         ),
-        width: 500,
-        height: 600,
-        child: ListView(
-          children: [
-            Text('Tài Khoản')
-            // UserInforCard(presenter: presenter),
-            // ExpansionTile(
-            //   title: const Text(
-            //     'Hạng thành viên',
-            //     style: TextStyle(
-            //       fontSize: 18,
-            //       fontWeight: FontWeight.bold,
-            //       color: Colors.deepPurple,
-            //     ),
-            //   ),
-            //   children: [
-            //     if (presenter.packageUsers.isNotEmpty)
-            //       PackageUserItem(
-            //         packageUser: presenter.packageUsers[0],
-            //         userType: UserTypePresenter.getUserType(
-            //             presenter.packageUsers[0].userTypeId),
-            //         packageTypeName: PackageTypePresenter.getPackageTypeName(
-            //                 presenter.packageUsers[0].packageTypeId) ??
-            //             "",
-            //       )
-            //     else
-            //       const Padding(
-            //         padding: EdgeInsets.all(16.0),
-            //         child: Text(
-            //           'Không có gói thành viên nào đang sử dụng.',
-            //           style: TextStyle(fontSize: 16),
-            //         ),
-            //       ),
-            //   ],
-            // ),
-            // ExpansionTile(
-            //   title: const Text(
-            //     'Lịch sử gói',
-            //     style: TextStyle(
-            //       fontSize: 18,
-            //       fontWeight: FontWeight.bold,
-            //       color: Colors.deepPurple,
-            //     ),
-            //   ),
-            //   children: [
-            //     if (presenter.packageUsers.isNotEmpty)
-            //       for (int i = 0; i < presenter.packageUsers.length; i++)
-            //         PackageUserItem(
-            //           packageUser: presenter.packageUsers[i],
-            //           userType: UserTypePresenter.getUserType(
-            //               presenter.packageUsers[i].userTypeId),
-            //           packageTypeName: PackageTypePresenter.getPackageTypeName(
-            //                   presenter.packageUsers[i].packageTypeId) ??
-            //               "",
-            //         )
-            //     else
-            //       const Padding(
-            //         padding: EdgeInsets.all(16.0),
-            //         child: Text(
-            //           'Không có lịch sử gói thành viên.',
-            //           style: TextStyle(fontSize: 16),
-            //         ),
-            //       ),
-            //   ],
-            // ),
-          ],
+      );
+    } else {
+      return Center(
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          width: 500,
+          height: 600,
+          child: ListView(
+            children: [
+              const UserInforCard(),
+              ExpansionTile(
+                title: const Text(
+                  'Gói đang sử dụng',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.deepPurple,
+                  ),
+                ),
+                children: [
+                  if (packageUserIsUsing != null)
+                    PackageUserItem(packageUser: packageUserIsUsing!)
+                  else
+                    const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        'Không có gói thành viên nào đang sử dụng.',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                ],
+              ),
+              ExpansionTile(
+                title: const Text(
+                  'Lịch sử gói',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.deepPurple,
+                  ),
+                ),
+                children: [
+                  if (packageUsers.isNotEmpty)
+                    for (int i = 0; i < packageUsers.length; i++)
+                      PackageUserItem(packageUser: packageUsers[i])
+                  else
+                    const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        'Không có lịch sử gói thành viên.',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }

@@ -6,6 +6,9 @@ class UserModel {
   String phone;
   bool locked;
   bool isAdmin;
+  int configCount;
+  int exportCount;
+  int autoConfigCount;
 
   UserModel({
     required this.id,
@@ -15,6 +18,9 @@ class UserModel {
     required this.phone,
     required this.isAdmin,
     required this.locked,
+    required this.configCount,
+    required this.exportCount,
+    required this.autoConfigCount,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +32,9 @@ class UserModel {
       phone: json['phone'] ?? '',
       locked: json['locked'],
       isAdmin: json['is_admin'] ?? false,
+      configCount: json['config_count'],
+      exportCount: json['export_count'],
+      autoConfigCount: json['auto_config_count'],
     );
   }
 }

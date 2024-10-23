@@ -218,7 +218,6 @@ class ItemPresenter {
     Function reload,
   ) async {
     try {
-      if (isLoading == true) return;
       isLoading = true;
       final queryParams = {"keyword": key};
       final uri = Uri.parse('$getSearchSuggestionsAPI${userLogin!.id}?')
@@ -250,7 +249,6 @@ class ItemPresenter {
 
   search(Function reload) async {
     try {
-      if (isLoading == true) return;
       isLoading = true;
       final response = await http.get(
           Uri.parse("$searchItemAPI${userLogin!.id}/${searchController.text}"));
