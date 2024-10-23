@@ -81,7 +81,10 @@ class UserTypePresenter {
                 await packageUserPresenter
                     .getAllPackageUserOfUser(userLogin!.id);
                 reload();
+
+                return true;
               }
+              return false;
             },
           );
         },

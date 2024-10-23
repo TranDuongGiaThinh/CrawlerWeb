@@ -243,15 +243,23 @@ class ItemPresenter {
       }
 
       isLoading = false;
-      reload();
+      try {
+        reload();
+      } catch (e) {
+        if (kDebugMode) {
+          print('Lỗi khi cập nhật giao diện!');
+        }
+      }
     }
   }
 
   search(Function reload) async {
     try {
       isLoading = true;
-      final response = await http.get(
-          Uri.parse("$searchItemAPI${userLogin!.id}/${searchController.text}"));
+      final response = await http.post(
+          Uri.parse("$searchItemAPI${userLogin!.id}"),
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode({"keyword": searchController.text}));
 
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body)['items'];

@@ -123,25 +123,27 @@ class RenewalPackageDialogState extends State<RenewalPackageDialog> {
         ),
         ElevatedButton(
           onPressed: () {
-            Navigator.of(context).pop();
             if (userLogin == null) {
               showLoginDialog(context);
             } else {
               widget
-                  .onConfirm(PackageUserModel(
-                      id: -1,
-                      userId: userLogin!.id,
-                      userType: widget.userType.type,
-                      renewalPackage: selectedRenewalPackage!.type,
-                      days: selectedRenewalPackage!.days,
-                      totalPrice: totalPrice.ceil(),
-                      maxConfig: widget.userType.maxConfig,
-                      maxExport: widget.userType.maxExport,
-                      maxAutoConfig: widget.userType.maxAutoConfig,
-                      isActive: true,
-                      createAt: DateTime.now()))
+                  .onConfirm(
+                PackageUserModel(
+                    id: -1,
+                    userId: userLogin!.id,
+                    userType: widget.userType.type,
+                    renewalPackage: selectedRenewalPackage!.type,
+                    days: selectedRenewalPackage!.days,
+                    totalPrice: totalPrice.ceil(),
+                    maxConfig: widget.userType.maxConfig,
+                    maxExport: widget.userType.maxExport,
+                    maxAutoConfig: widget.userType.maxAutoConfig,
+                    isActive: true,
+                    createAt: DateTime.now()),
+              )
                   .then((result) {
                 if (result) {
+                  Navigator.of(context).pop();
                   // Hiển thị thông báo thành công
                   showDialog(
                     context: context,
@@ -162,6 +164,7 @@ class RenewalPackageDialogState extends State<RenewalPackageDialog> {
                     },
                   );
                 } else {
+                  Navigator.of(context).pop();
                   // Hiển thị thông báo thất bại
                   showDialog(
                     context: context,
