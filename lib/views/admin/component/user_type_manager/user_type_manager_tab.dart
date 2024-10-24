@@ -1,141 +1,75 @@
+import 'package:crawler_web/global/global_data.dart';
 import 'package:flutter/material.dart';
 
-class AddUserTypeDialog extends StatefulWidget {
-  // final AdminPresenter presenter;
+import 'add_user_type_dialog.dart';
+import 'user_type_manager_item.dart';
 
-  const AddUserTypeDialog({
-    super.key, 
-    // required this.presenter
-  });
+class UserTypeManagerTab extends StatefulWidget {
+  const UserTypeManagerTab({super.key});
 
   @override
-  AddUserTypeDialogState createState() => AddUserTypeDialogState();
+  State<UserTypeManagerTab> createState() => _UserTypeManagerTabState();
 }
 
-class AddUserTypeDialogState extends State<AddUserTypeDialog> {
-  late TextEditingController _typeController;
-  late TextEditingController _descriptionController;
-  late TextEditingController _priceController;
-  late TextEditingController _maxConfigsController;
-  late TextEditingController _deletedController;
-
-  @override
-  void initState() {
-    super.initState();
-    _typeController = TextEditingController();
-    _descriptionController = TextEditingController();
-    _priceController = TextEditingController();
-    _maxConfigsController = TextEditingController();
-    _deletedController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _typeController.dispose();
-    _descriptionController.dispose();
-    _priceController.dispose();
-    _maxConfigsController.dispose();
-    _deletedController.dispose();
-    super.dispose();
-  }
-
-  void _handleSave() {
-    if (_typeController.text.isEmpty ||
-        _descriptionController.text.isEmpty ||
-        _priceController.text.isEmpty ||
-        _maxConfigsController.text.isEmpty) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Dữ liệu rỗng'),
-            content: const Text('Hãy điền đầy đủ thông tin'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-      return;
-    }
-
-    int? price = int.tryParse(_priceController.text);
-    int? maxConfigs = int.tryParse(_maxConfigsController.text);
-    if (price == null || maxConfigs == null || price < 0 || maxConfigs < 0) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Giá trị không phải số hợp lệ'),
-            content: const Text('Hãy kiểm tra lại các thuộc tính kiểu số'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-      return;
-    }
-
-    // UserTypeModel newUserType = UserTypeModel(
-    //   id: -1,
-    //   type: _typeController.text,
-    //   description: _descriptionController.text,
-    //   price: price,
-    //   maxConfigs: maxConfigs,
-    // );
-    // widget.presenter.createUserType(newUserType);
-    Navigator.of(context).pop();
-  }
-
+class _UserTypeManagerTabState extends State<UserTypeManagerTab> {
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Thêm mới'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          TextField(
-            controller: _typeController,
-            decoration: const InputDecoration(labelText: 'Tên gói'),
-          ),
-          TextField(
-            controller: _descriptionController,
-            decoration: const InputDecoration(labelText: 'Mô tả'),
-          ),
-          TextField(
-            controller: _priceController,
-            decoration: const InputDecoration(labelText: 'Giá gói'),
-            keyboardType: TextInputType.number,
-          ),
-          TextField(
-            controller: _maxConfigsController,
-            decoration: const InputDecoration(
-                labelText: 'Số lượng cấu hình có thể tạo tối đa'),
-            keyboardType: TextInputType.number,
-          ),
-        ],
-      ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Hủy'),
+    return Stack(
+      children: [
+        Column(
+          children: [
+            Expanded(
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                      padding: const EdgeInsets.all(8.0),
+                      itemCount: (userTypes.length / 3).ceil(),
+                      itemBuilder: (context, rowIndex) {
+                        final startIndex = rowIndex * 3;
+                        final endIndex = startIndex + 3;
+                        final rowItems = userTypes.sublist(
+                          startIndex,
+                          endIndex > userTypes.length
+                              ? userTypes.length
+                              : endIndex,
+                        );
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: rowItems.map((userType) {
+                            return UserTypeManagerItem(item: userType);
+                          }).toList(),
+                        );
+                      },
+                    ),
+            ),
+          ],
         ),
-        ElevatedButton(
-          onPressed: _handleSave,
-          child: const Text('Thêm'),
+        Positioned(
+          bottom: 32.0,
+          right: 32.0,
+          child: GestureDetector(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AddUserTypeDialog(
+                    reload: () {
+                      setState(() {});
+                    },
+                  );
+                },
+              );
+            },
+            child: Container(
+              width: 56.0,
+              height: 56.0,
+              decoration: const BoxDecoration(
+                color: Colors.deepPurple,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.add, color: Colors.white),
+            ),
+          ),
         ),
       ],
     );

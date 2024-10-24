@@ -39,15 +39,19 @@ class LoginFormState extends State<LoginForm> {
             userPresenter.login(() {
               setState(() {});
             }).then((user) => {
-              if (user != null) {
-                // Lưu user vào biến toàn cục
-                userLogin = user,
-                packageUserPresenter.getAllPackageUserOfUser(user.id),
-
-                // Chuyển trang khi đang nhập thành công
-                Navigator.pushReplacementNamed(context, '/')
-              }
-            });
+                  if (user != null)
+                    {
+                      // Lưu user vào biến toàn cục
+                      userLogin = user,
+                      if (!user.isAdmin)
+                        {
+                          packageUserPresenter.getAllPackageUserOfUser(user.id),
+                          Navigator.pushReplacementNamed(context, '/')
+                        }
+                      else
+                        {Navigator.pushReplacementNamed(context, '/admin')}
+                    }
+                });
           },
           child: const Text('Đăng nhập'),
         ),

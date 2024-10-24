@@ -1,5 +1,9 @@
+import 'package:crawler_web/views/admin/component/app_manager/app_manager_tab.dart';
+import 'package:crawler_web/views/admin/component/instruction_manager/instruction_manager_tab.dart';
+import 'package:crawler_web/views/admin/component/introduction_manager/introduction_manager_tab.dart';
 import 'package:crawler_web/views/admin/component/package_type_manager/package_type_manager_tab.dart';
-import 'package:crawler_web/views/admin/component/user_type_manager/user_type_manager_item.dart';
+import 'package:crawler_web/views/admin/component/user_manager/user_manager_tab.dart';
+import 'package:crawler_web/views/admin/component/user_type_manager/user_type_manager_tab.dart';
 import 'package:flutter/material.dart';
 
 import '../../global/global_data.dart';
@@ -14,43 +18,37 @@ class AdminScreen extends StatefulWidget {
 class _AdminScreenState extends State<AdminScreen>
     with SingleTickerProviderStateMixin {
   //late AdminPresenter presenter;
-  late TabController t;
+  late TabController tabController;
 
   @override
   void initState() {
     super.initState();
 
-    // presenter = AdminPresenter(reload: () {
-    //   setState(() {});
-    // });
-    // presenter.tabController = TabController(length: 5, vsync: this);
-    // presenter.tabController.addListener(() {
-    //   presenter.message = "";
-    // });
-    t = TabController(length: 3, vsync: this);
+    if (userTypes.isEmpty) {
+      userTypePresenter.getAllUserTypes().then((value) {
+        setState(() {
+          userTypes = value;
+        });
+      });
+    }
+
+    tabController = TabController(length: 6, vsync: this);
   }
 
   @override
   void dispose() {
-    //presenter.tabController.dispose();
+    tabController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // if (userLogin == null) {
-    //   Future.delayed(Duration.zero, () {
-    //     Navigator.pushReplacementNamed(context, '/');
-    //   });
-    //   return Container();
-    // }
-
-    // if (userLogin!.isAdmin == false) {
-    //   Future.delayed(Duration.zero, () {
-    //     Navigator.pushReplacementNamed(context, '/home');
-    //   });
-    //   return Container();
-    // }
+    if (userLogin == null || userLogin?.isAdmin == false) {
+      Future.delayed(Duration.zero, () {
+        Navigator.pushReplacementNamed(context, '/');
+      });
+      return Container();
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -117,35 +115,41 @@ class _AdminScreenState extends State<AdminScreen>
           ],
         ),
         bottom: TabBar(
-          controller: t,
+          controller: tabController,
           tabs: const [
             Tab(
               child: Text(
-                'Gói thành viên',
+                'Giới Thiệu',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
             Tab(
               child: Text(
-                'Gói thời hạn',
+                'Gói Thành Viên',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
             Tab(
               child: Text(
-                'Ứng dụng',
+                'Gói Gia Hạn',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
             Tab(
               child: Text(
-                'Hướng dẫn',
+                'Ứng Dụng',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
             Tab(
               child: Text(
-                'Người dùng',
+                'Hướng Dẫn',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Tab(
+              child: Text(
+                'Người Dùng',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
@@ -153,13 +157,14 @@ class _AdminScreenState extends State<AdminScreen>
         ),
       ),
       body: TabBarView(
-        controller: t,
-        children: [
-          UserTypeAdminItem(),
-          PackageTypeAdminTab(),
-          // DownloadAppAdminTab(presenter: presenter),
-          // DownloadInstructionAdminTab(presenter: presenter),
-          // ListUserAdminTab(presenter: presenter),
+        controller: tabController,
+        children: const [
+          IntroductionManagerTab(),
+          UserTypeManagerTab(),
+          PackageTypeManagerTab(),
+          AppManagerTab(),
+          InstructionManagerTab(),
+          UserManagerTab(),
         ],
       ),
     );

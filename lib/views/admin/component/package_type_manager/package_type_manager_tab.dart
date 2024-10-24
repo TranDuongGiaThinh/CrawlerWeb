@@ -1,26 +1,18 @@
 import 'package:flutter/material.dart';
 
-class PackageTypeAdminTab extends StatefulWidget {
-  const PackageTypeAdminTab({
-    super.key, 
-    // required this.presenter
-  });
-  // final AdminPresenter presenter;
+class PackageTypeManagerTab extends StatefulWidget {
+  const PackageTypeManagerTab({super.key});
 
   @override
-  State<PackageTypeAdminTab> createState() => _PackageTypeAdminTabState();
+  State<PackageTypeManagerTab> createState() => _PackageTypeManagerTabState();
 }
 
-class _PackageTypeAdminTabState extends State<PackageTypeAdminTab> {
-  @override
-  void initState() {
-    super.initState();
-
-    // widget.presenter.loadPackageTypes();
-  }
-
+class _PackageTypeManagerTabState extends State<PackageTypeManagerTab> {
   @override
   Widget build(BuildContext context) {
+    return Container(
+      child: Text('gói gia hạn'),
+    );
     return Stack(
       children: [
         Column(

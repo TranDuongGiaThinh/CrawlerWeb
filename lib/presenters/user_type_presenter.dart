@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:crawler_web/global/global_data.dart';
 import 'package:crawler_web/models/package_user_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,7 +11,6 @@ import '../views/home/component/show_login_dialog.dart/show_login_dialog.dart';
 import '../views/home/component/user_type_tab/renewal_package_dialog.dart';
 
 class UserTypePresenter {
-  static List<UserTypeModel> userTypes = [];
   String message = '';
 
   UserTypePresenter();
@@ -22,15 +22,15 @@ class UserTypePresenter {
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body)['user_types'];
         userTypes = data.map((json) => UserTypeModel.fromJson(json)).toList();
-        message = 'Dữ liệu đã được tải thành công';
+        message = 'UserTypes đã được tải thành công';
 
         return userTypes;
       } else {
-        message = 'Lỗi tải dữ liệu: ${response.statusCode}';
+        message = 'Lỗi tải UserTypes: ${response.statusCode}';
         return [];
       }
     } catch (error) {
-      message = 'Lỗi tải dữ liệu: $error';
+      message = 'Lỗi tải UserTypes: $error';
       return [];
     }
   }
@@ -98,6 +98,44 @@ class UserTypePresenter {
       return userType;
     } catch (error) {
       return null;
+    }
+  }
+
+  addUserType(UserTypeModel userType) async {
+    try {
+      // check name exists
+      ////
+
+      final url = Uri.parse(createUserTypeAPI);
+
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          "type": userType.type,
+          "description": userType.description,
+          "max_auto_config": userType.maxAutoConfig,
+          "max_config": userType.maxConfig,
+          "max_export": userType.maxExport,
+          "price": userType.price,
+        }),
+      );
+
+      if (response.statusCode == 201) {
+        final Map<String, dynamic> body = json.decode(response.body);
+        final UserTypeModel newUserType =
+            UserTypeModel.fromJson(body['user_type']);
+        userTypes.add(newUserType);
+      } else {
+        final Map<String, dynamic> body = json.decode(response.body);
+        if (kDebugMode) {
+          print(body['error']);
+        }
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print("Lỗi khi tạo mới gói thành viên: $error");
+      }
     }
   }
 }

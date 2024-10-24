@@ -22,6 +22,14 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
 
+    if (userTypes.isEmpty) {
+      userTypePresenter.getAllUserTypes().then((value) {
+        setState(() {
+          userTypes = value;
+        });
+      });
+    }
+
     _tabController = TabController(length: 6, vsync: this);
   }
 

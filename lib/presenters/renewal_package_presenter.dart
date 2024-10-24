@@ -17,10 +17,10 @@ class RenewalPackagePresenter {
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body)['renewal_packages'];
         renewalPackages = data.map((json) => RenewalPackageModel.fromJson(json)).toList();
-        message = 'Dữ liệu đã được tải thành công';
+        message = 'RenewalPackages đã được tải thành công';
         return renewalPackages;
       } else {
-        message = 'Không thể tải dữ liệu';
+        message = 'Không thể tải RenewalPackages';
         if (kDebugMode) {
           print(message);
         }
@@ -29,7 +29,7 @@ class RenewalPackagePresenter {
     } catch (e) {
       message = 'Đã xảy ra lỗi: $e';
       if (kDebugMode) {
-        print(message);
+        print('lỗi khi tải RenewalPackages $e');
       }
       return [];
     }

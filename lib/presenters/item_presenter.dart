@@ -34,7 +34,7 @@ class ItemPresenter {
       } else {
         items = [];
         if (kDebugMode) {
-          print('Lỗi tải dữ liệu: ${json.decode(response.body)['error']}');
+          print('Lỗi tải items: ${json.decode(response.body)['error']}');
         }
       }
     } catch (error) {
@@ -98,7 +98,7 @@ class ItemPresenter {
       onData(data);
     } else {
       if (kDebugMode) {
-        print('Lỗi tải dữ liệu $key: ${response.statusCode}');
+        print('Lỗi tải dữ liệu của $key: ${response.statusCode}');
       }
     }
   }
@@ -162,7 +162,7 @@ class ItemPresenter {
         items = data.map((json) => ItemModel.fromJson(json)).toList();
       } else {
         if (kDebugMode) {
-          print('Lỗi tải dữ liệu: ${response.statusCode}');
+          print('Lỗi khi filter: ${response.statusCode}');
         }
       }
     } catch (error) {
@@ -230,7 +230,7 @@ class ItemPresenter {
         searchSuggestions = data.map((e) => e.toString()).toList();
       } else {
         if (kDebugMode) {
-          print('Lỗi tải dữ liệu $key: ${response.statusCode}');
+          print('Lỗi tải suggestions: ${response.statusCode}');
         }
       }
 
