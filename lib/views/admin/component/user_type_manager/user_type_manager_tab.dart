@@ -36,7 +36,12 @@ class _UserTypeManagerTabState extends State<UserTypeManagerTab> {
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: rowItems.map((userType) {
-                            return UserTypeManagerItem(item: userType);
+                            return UserTypeManagerItem(
+                              item: userType,
+                              reload: () {
+                                setState(() {});
+                              },
+                            );
                           }).toList(),
                         );
                       },

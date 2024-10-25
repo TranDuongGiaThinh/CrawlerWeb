@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AddPackageTypeDialog extends StatefulWidget {
-  // final AdminPresenter presenter;
-
-  const AddPackageTypeDialog({
-    super.key, 
-    // required this.presenter
-  });
+  const AddPackageTypeDialog({super.key});
 
   @override
   AddPackageTypeDialogState createState() => AddPackageTypeDialogState();
@@ -117,8 +112,7 @@ class AddPackageTypeDialogState extends State<AddPackageTypeDialog> {
           ),
           TextField(
             controller: _daysController,
-            decoration: const InputDecoration(
-                labelText: 'Số ngày sử dụng'),
+            decoration: const InputDecoration(labelText: 'Số ngày sử dụng'),
             keyboardType: TextInputType.number,
           ),
         ],

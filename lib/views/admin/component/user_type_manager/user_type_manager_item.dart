@@ -1,14 +1,19 @@
+import 'package:crawler_web/global/global_data.dart';
 import 'package:crawler_web/models/user_type_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import 'update_user_type_dialog.dart';
 
 class UserTypeManagerItem extends StatefulWidget {
   const UserTypeManagerItem({
     super.key,
     required this.item,
+    required this.reload,
   });
 
   final UserTypeModel item;
+  final Function reload;
 
   @override
   State<UserTypeManagerItem> createState() => _UserTypeManagerItemState();
@@ -93,13 +98,15 @@ class _UserTypeManagerItemState extends State<UserTypeManagerItem> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // showDialog(
-                      //   context: context,
-                      //   builder: (BuildContext context) {
-                      //     return UpdateUserTypeDialog(
-                      //         presenter: presenter, item: item);
-                      //   },
-                      // );
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return UpdateUserTypeDialog(
+                            item: widget.item,
+                            reload: widget.reload,
+                          );
+                        },
+                      );
                     },
                     style: ButtonStyle(
                       backgroundColor: WidgetStateProperty.all<Color>(
@@ -141,7 +148,55 @@ class _UserTypeManagerItemState extends State<UserTypeManagerItem> {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    // presenter.deleteUserType(item.id);
+                                    userTypePresenter
+                                        .deleteUserType(widget.item)
+                                        .then((value) {
+                                      if (value == true) {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: const Text('Thành Công!'),
+                                              content: const Text(
+                                                  'Xóa gói thành viên thành công!'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () {
+                                                    userTypePresenter
+                                                        .getAllUserTypes()
+                                                        .then((value) {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      widget.reload();
+                                                    });
+                                                  },
+                                                  child: const Text('OK'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      } else {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: const Text('Thất bại!'),
+                                              content: const Text(
+                                                  'Xóa gói thành viên thất bại!'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text('OK'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      }
+                                    });
                                     Navigator.of(context).pop();
                                   },
                                   child: const Text('Xóa',

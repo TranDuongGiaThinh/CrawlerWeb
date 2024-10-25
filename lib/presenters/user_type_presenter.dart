@@ -103,9 +103,6 @@ class UserTypePresenter {
 
   addUserType(UserTypeModel userType) async {
     try {
-      // check name exists
-      ////
-
       final url = Uri.parse(createUserTypeAPI);
 
       final response = await http.post(
@@ -136,6 +133,109 @@ class UserTypePresenter {
       if (kDebugMode) {
         print("Lỗi khi tạo mới gói thành viên: $error");
       }
+    }
+  }
+
+  Future<bool?> checkUserTypeNameExistsOnAdd(String name) async {
+    try {
+      final response =
+          await http.get(Uri.parse('${checkUserTypeNameExistsAPI}name=$name'));
+
+      if (response.statusCode == 200) {
+        bool checkResult = json.decode(response.body)['check_result'];
+
+        return checkResult;
+      } else {
+        message = 'Lỗi khi kiểm tra tên gói thành viên: ${response.statusCode}';
+        return null;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Lỗi khi kiểm tra tên gói thành viên: $e");
+      }
+
+      return null;
+    }
+  }
+
+  // Future<bool?> checkUserTypeNameExistsOnAdd(String name) async {
+  //   try {
+  //     final response =
+  //         await http.get(Uri.parse('${checkUserTypeNameExistsAPI}name=$name'));
+
+  //     if (response.statusCode == 200) {
+  //       bool checkResult = json.decode(response.body)['check_result'];
+
+  //       return checkResult;
+  //     } else {
+  //       message = 'Lỗi khi kiểm tra tên gói thành viên: ${response.statusCode}';
+  //       return null;
+  //     }
+  //   } catch (e) {
+  //     if (kDebugMode) {
+  //       print("Lỗi khi kiểm tra tên gói thành viên: $e");
+  //     }
+
+  //     return null;
+  //   }
+  // }
+
+  updateUserType(UserTypeModel userType) async {
+    try {
+      final url = Uri.parse(updateUserTypeAPI);
+
+      final response = await http.put(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          "id": userType.id,
+          "type": userType.type,
+          "description": userType.description,
+          "max_auto_config": userType.maxAutoConfig,
+          "max_config": userType.maxConfig,
+          "max_export": userType.maxExport,
+          "price": userType.price,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> body = json.decode(response.body);
+        final UserTypeModel updatedUserType =
+            UserTypeModel.fromJson(body['user_type']);
+        return updatedUserType;
+      } else {
+        final Map<String, dynamic> body = json.decode(response.body);
+        if (kDebugMode) {
+          print(body['error']);
+        }
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print("Lỗi khi tạo mới gói thành viên: $error");
+      }
+    }
+  }
+
+  Future<bool> deleteUserType(UserTypeModel userType) async {
+    try {
+      final url = Uri.parse('$deleteUserTypeAPI${userType.id}');
+
+      final response = await http.patch(url);
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        final Map<String, dynamic> body = json.decode(response.body);
+        if (kDebugMode) {
+          print(body['error']);
+        }
+        return false;
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print("Lỗi khi tạo mới gói thành viên: $error");
+      }
+      return false;
     }
   }
 }

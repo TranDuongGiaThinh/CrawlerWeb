@@ -1,14 +1,14 @@
+import 'package:crawler_web/global/global_data.dart';
 import 'package:flutter/material.dart';
 
-class UpdateUserTypeDialog extends StatefulWidget {
-  // final AdminPresenter presenter;
-  // final UserTypeModel item;
+import '../../../../models/user_type_model.dart';
 
-  const UpdateUserTypeDialog({
-        super.key, 
-        // required this.presenter, 
-        // required this.item
-      });
+class UpdateUserTypeDialog extends StatefulWidget {
+  final UserTypeModel item;
+  final Function reload;
+
+  const UpdateUserTypeDialog(
+      {super.key, required this.item, required this.reload});
 
   @override
   UpdateUserTypeDialogState createState() => UpdateUserTypeDialogState();
@@ -18,18 +18,24 @@ class UpdateUserTypeDialogState extends State<UpdateUserTypeDialog> {
   late TextEditingController _typeController;
   late TextEditingController _descriptionController;
   late TextEditingController _priceController;
-  late TextEditingController _maxConfigsController;
+  late TextEditingController _maxConfigController;
+  late TextEditingController _maxExportController;
+  late TextEditingController _maxAutoConfigController;
 
   @override
   void initState() {
     super.initState();
-    // _typeController = TextEditingController(text: widget.item.type);
-    // _descriptionController =
-    //     TextEditingController(text: widget.item.description);
-    // _priceController =
-    //     TextEditingController(text: widget.item.price.toString());
-    // _maxConfigsController =
-    //     TextEditingController(text: widget.item.maxConfigs.toString());
+    _typeController = TextEditingController(text: widget.item.type);
+    _descriptionController =
+        TextEditingController(text: widget.item.description);
+    _priceController =
+        TextEditingController(text: widget.item.price.toString());
+    _maxConfigController =
+        TextEditingController(text: widget.item.maxConfig.toString());
+    _maxExportController =
+        TextEditingController(text: widget.item.maxExport.toString());
+    _maxAutoConfigController =
+        TextEditingController(text: widget.item.maxAutoConfig.toString());
   }
 
   @override
@@ -37,7 +43,7 @@ class UpdateUserTypeDialogState extends State<UpdateUserTypeDialog> {
     _typeController.dispose();
     _descriptionController.dispose();
     _priceController.dispose();
-    _maxConfigsController.dispose();
+    _maxConfigController.dispose();
     super.dispose();
   }
 
@@ -45,7 +51,7 @@ class UpdateUserTypeDialogState extends State<UpdateUserTypeDialog> {
     if (_typeController.text.isEmpty ||
         _descriptionController.text.isEmpty ||
         _priceController.text.isEmpty ||
-        _maxConfigsController.text.isEmpty) {
+        _maxConfigController.text.isEmpty) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -67,8 +73,15 @@ class UpdateUserTypeDialogState extends State<UpdateUserTypeDialog> {
     }
 
     int? price = int.tryParse(_priceController.text);
-    int? maxConfigs = int.tryParse(_maxConfigsController.text);
-    if (price == null || maxConfigs == null || price < 0 || maxConfigs < 0) {
+    int? maxConfig = int.tryParse(_maxConfigController.text);
+    int? maxExport = int.tryParse(_maxExportController.text);
+    int? maxAutoConfig = int.tryParse(_maxAutoConfigController.text);
+    if (price == null ||
+        maxConfig == null ||
+        maxExport == null ||
+        maxAutoConfig == null ||
+        price < 0 ||
+        maxConfig < 0) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -89,15 +102,38 @@ class UpdateUserTypeDialogState extends State<UpdateUserTypeDialog> {
       return;
     }
 
-    // UserTypeModel newUserType = UserTypeModel(
-    //   id: widget.item.id,
-    //   type: _typeController.text,
-    //   description: _descriptionController.text,
-    //   price: price,
-    //   maxConfigs: maxConfigs,
-    // );
-    // widget.presenter.updateUserType(newUserType);
-    Navigator.of(context).pop();
+    UserTypeModel newUserType = UserTypeModel(
+      id: widget.item.id,
+      type: _typeController.text,
+      description: _descriptionController.text,
+      price: price,
+      maxConfig: maxConfig,
+      maxExport: maxExport,
+      maxAutoConfig: maxAutoConfig,
+    );
+    userTypePresenter.updateUserType(newUserType).then((value) {
+      Navigator.of(context).pop();
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Thành Công!'),
+            content: const Text('Cập nhật gói thành viên thành công!'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  userTypePresenter.getAllUserTypes().then((value) {
+                    Navigator.of(context).pop();
+                    widget.reload();
+                  });
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    });
   }
 
   @override
@@ -110,7 +146,6 @@ class UpdateUserTypeDialogState extends State<UpdateUserTypeDialog> {
           TextField(
             controller: _typeController,
             decoration: const InputDecoration(labelText: 'Tên gói'),
-            enabled: _priceController.text != '0',
           ),
           TextField(
             controller: _descriptionController,
@@ -120,12 +155,23 @@ class UpdateUserTypeDialogState extends State<UpdateUserTypeDialog> {
             controller: _priceController,
             decoration: const InputDecoration(labelText: 'Giá gói'),
             keyboardType: TextInputType.number,
-            enabled: _priceController.text != '0',
           ),
           TextField(
-            controller: _maxConfigsController,
+            controller: _maxConfigController,
             decoration: const InputDecoration(
                 labelText: 'Số lượng cấu hình có thể tạo tối đa'),
+            keyboardType: TextInputType.number,
+          ),
+          TextField(
+            controller: _maxExportController,
+            decoration: const InputDecoration(
+                labelText: 'Số lần xuất dữ liệu thu thập tối đa'),
+            keyboardType: TextInputType.number,
+          ),
+          TextField(
+            controller: _maxAutoConfigController,
+            decoration: const InputDecoration(
+                labelText: 'Số lượng cấu hình thu thập tự động tối đa'),
             keyboardType: TextInputType.number,
           ),
         ],

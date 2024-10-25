@@ -1,7 +1,7 @@
 import 'package:crawler_web/views/admin/component/app_manager/app_manager_tab.dart';
 import 'package:crawler_web/views/admin/component/instruction_manager/instruction_manager_tab.dart';
 import 'package:crawler_web/views/admin/component/introduction_manager/introduction_manager_tab.dart';
-import 'package:crawler_web/views/admin/component/package_type_manager/package_type_manager_tab.dart';
+import 'package:crawler_web/views/admin/component/renewal_package_manager/renewal_package_manager_tab.dart';
 import 'package:crawler_web/views/admin/component/user_manager/user_manager_tab.dart';
 import 'package:crawler_web/views/admin/component/user_type_manager/user_type_manager_tab.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,6 @@ class AdminScreen extends StatefulWidget {
 
 class _AdminScreenState extends State<AdminScreen>
     with SingleTickerProviderStateMixin {
-  //late AdminPresenter presenter;
   late TabController tabController;
 
   @override
@@ -161,7 +160,7 @@ class _AdminScreenState extends State<AdminScreen>
         children: const [
           IntroductionManagerTab(),
           UserTypeManagerTab(),
-          PackageTypeManagerTab(),
+          RenewalPackageManagerTab(),
           AppManagerTab(),
           InstructionManagerTab(),
           UserManagerTab(),

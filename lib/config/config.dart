@@ -16,7 +16,7 @@ const String getAllUserTypeAPI = '$baseURL/user-type/get-all';
 const String checkUserTypeNameExistsAPI = '$baseURL/user-type/check-name-exists?';
 const String createUserTypeAPI = '$baseURL/user-type/add';
 const String updateUserTypeAPI = '$baseURL/user-type/update';
-const String deleteUserTypeAPI = '$baseURL/api/user-type/delete/';
+const String deleteUserTypeAPI = '$baseURL/user-type/delete/';
 
 // Gói gia hạn
 const String getAllRenewalPackageAPI = '$baseURL/renewal-package/get-all';

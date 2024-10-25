@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class PackageTypeManagerTab extends StatefulWidget {
-  const PackageTypeManagerTab({super.key});
+class RenewalPackageManagerTab extends StatefulWidget {
+  const RenewalPackageManagerTab({super.key});
 
   @override
-  State<PackageTypeManagerTab> createState() => _PackageTypeManagerTabState();
+  State<RenewalPackageManagerTab> createState() => _RenewalPackageManagerTabState();
 }
 
-class _PackageTypeManagerTabState extends State<PackageTypeManagerTab> {
+class _RenewalPackageManagerTabState extends State<RenewalPackageManagerTab> {
   @override
   Widget build(BuildContext context) {
     return Container(
