@@ -111,28 +111,52 @@ class UpdateUserTypeDialogState extends State<UpdateUserTypeDialog> {
       maxExport: maxExport,
       maxAutoConfig: maxAutoConfig,
     );
-    userTypePresenter.updateUserType(newUserType).then((value) {
-      Navigator.of(context).pop();
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Thành Công!'),
-            content: const Text('Cập nhật gói thành viên thành công!'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  userTypePresenter.getAllUserTypes().then((value) {
-                    Navigator.of(context).pop();
-                    widget.reload();
-                  });
+    userTypePresenter
+        .checkUserTypeNameExistsOnUpdate(widget.item.id, _typeController.text)
+        .then((value) {
+      value != true
+          ? userTypePresenter.updateUserType(newUserType).then((value) {
+              Navigator.of(context).pop();
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Thành Công!'),
+                    content: const Text('Cập nhật gói thành viên thành công!'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          userTypePresenter.getAllUserTypes().then((value) {
+                            Navigator.of(context).pop();
+                            widget.reload();
+                          });
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  );
                 },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+              );
+            })
+          : showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Tên gói thành viên đã tồn tại!'),
+                  content: const Text(
+                      'Tên gói thành viên đã tồn tại trong hệ thống!'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        widget.reload();
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                );
+              },
+            );
     });
   }
 

@@ -158,27 +158,27 @@ class UserTypePresenter {
     }
   }
 
-  // Future<bool?> checkUserTypeNameExistsOnAdd(String name) async {
-  //   try {
-  //     final response =
-  //         await http.get(Uri.parse('${checkUserTypeNameExistsAPI}name=$name'));
+  Future<bool?> checkUserTypeNameExistsOnUpdate(int id, String name) async {
+    try {
+      final response =
+          await http.get(Uri.parse('${checkUserTypeNameExistsAPI}name=$name&id=$id'));
 
-  //     if (response.statusCode == 200) {
-  //       bool checkResult = json.decode(response.body)['check_result'];
+      if (response.statusCode == 200) {
+        bool checkResult = json.decode(response.body)['check_result'];
 
-  //       return checkResult;
-  //     } else {
-  //       message = 'Lỗi khi kiểm tra tên gói thành viên: ${response.statusCode}';
-  //       return null;
-  //     }
-  //   } catch (e) {
-  //     if (kDebugMode) {
-  //       print("Lỗi khi kiểm tra tên gói thành viên: $e");
-  //     }
+        return checkResult;
+      } else {
+        message = 'Lỗi khi kiểm tra tên gói thành viên: ${response.statusCode}';
+        return null;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Lỗi khi kiểm tra tên gói thành viên: $e");
+      }
 
-  //     return null;
-  //   }
-  // }
+      return null;
+    }
+  }
 
   updateUserType(UserTypeModel userType) async {
     try {
