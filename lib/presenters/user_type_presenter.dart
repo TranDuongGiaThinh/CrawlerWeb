@@ -211,7 +211,7 @@ class UserTypePresenter {
       }
     } catch (error) {
       if (kDebugMode) {
-        print("Lỗi khi tạo mới gói thành viên: $error");
+        print("Lỗi khi cập nhật gói thành viên: $error");
       }
     }
   }
@@ -233,7 +233,7 @@ class UserTypePresenter {
       }
     } catch (error) {
       if (kDebugMode) {
-        print("Lỗi khi tạo mới gói thành viên: $error");
+        print("Lỗi khi xóa gói thành viên: $error");
       }
       return false;
     }

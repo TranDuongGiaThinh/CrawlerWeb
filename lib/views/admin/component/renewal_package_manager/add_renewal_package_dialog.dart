@@ -1,13 +1,20 @@
+import 'package:crawler_web/global/global_data.dart';
+import 'package:crawler_web/models/renewal_package.dart';
 import 'package:flutter/material.dart';
 
-class AddPackageTypeDialog extends StatefulWidget {
-  const AddPackageTypeDialog({super.key});
+class AddRenewalPackageDialog extends StatefulWidget {
+  const AddRenewalPackageDialog({
+    super.key,
+    required this.reload,
+  });
+
+  final Function reload;
 
   @override
-  AddPackageTypeDialogState createState() => AddPackageTypeDialogState();
+  AddRenewalPackageDialogState createState() => AddRenewalPackageDialogState();
 }
 
-class AddPackageTypeDialogState extends State<AddPackageTypeDialog> {
+class AddRenewalPackageDialogState extends State<AddRenewalPackageDialog> {
   late TextEditingController _typeController;
   late TextEditingController _descriptionController;
   late TextEditingController _promotionController;
@@ -79,15 +86,58 @@ class AddPackageTypeDialogState extends State<AddPackageTypeDialog> {
       return;
     }
 
-    // PackageTypeModel newPackageType = PackageTypeModel(
-    //   id: -1,
-    //   type: _typeController.text,
-    //   description: _descriptionController.text,
-    //   days: days,
-    //   promotion: promotion,
-    // );
-    // widget.presenter.createPackageType(newPackageType);
-    Navigator.of(context).pop();
+    RenewalPackageModel newPackageType = RenewalPackageModel(
+      id: -1,
+      type: _typeController.text,
+      description: _descriptionController.text,
+      days: days,
+      promotion: promotion,
+    );
+    renewalPackagePresenter
+        .checkRenewalPackageNameExistsOnAdd(_typeController.text)
+        .then((value) {
+      value != true
+          ? renewalPackagePresenter.add(newPackageType).then((value) {
+              Navigator.of(context).pop();
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Thành Công!'),
+                    content: const Text('Thêm mới gói gia hạn thành công!'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          widget.reload();
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            })
+          : showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Tên gói gia hạn đã tồn tại!'),
+                  content:
+                      const Text('Tên gói gia hạn đã tồn tại trong hệ thống!'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        widget.reload();
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                );
+              },
+            );
+    });
   }
 
   @override

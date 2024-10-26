@@ -1,20 +1,24 @@
+import 'package:crawler_web/global/global_data.dart';
+import 'package:crawler_web/models/renewal_package.dart';
 import 'package:flutter/material.dart';
 
-class UpdatePackageTypeDialog extends StatefulWidget {
-  // final AdminPresenter presenter;
-  // final PackageTypeModel item;
+class UpdateRenewalPackageDialog extends StatefulWidget {
+  final RenewalPackageModel item;
+  final Function reload;
 
-  const UpdatePackageTypeDialog({
-    super.key, 
-    // required this.presenter, 
-    // required this.item
+  const UpdateRenewalPackageDialog({
+    super.key,
+    required this.item,
+    required this.reload,
   });
 
   @override
-  UpdatePackageTypeDialogState createState() => UpdatePackageTypeDialogState();
+  UpdateRenewalPackageDialogState createState() =>
+      UpdateRenewalPackageDialogState();
 }
 
-class UpdatePackageTypeDialogState extends State<UpdatePackageTypeDialog> {
+class UpdateRenewalPackageDialogState
+    extends State<UpdateRenewalPackageDialog> {
   late TextEditingController _typeController;
   late TextEditingController _descriptionController;
   late TextEditingController _promotionController;
@@ -23,13 +27,12 @@ class UpdatePackageTypeDialogState extends State<UpdatePackageTypeDialog> {
   @override
   void initState() {
     super.initState();
-  //   _typeController = TextEditingController(text: widget.item.type);
-  //   _descriptionController =
-  //       TextEditingController(text: widget.item.description);
-  //   _promotionController =
-  //       TextEditingController(text: widget.item.promotion.toString());
-  //   _daysController =
-  //       TextEditingController(text: widget.item.days.toString());
+    _typeController = TextEditingController(text: widget.item.type);
+    _descriptionController =
+        TextEditingController(text: widget.item.description);
+    _promotionController =
+        TextEditingController(text: widget.item.promotion.toString());
+    _daysController = TextEditingController(text: widget.item.days.toString());
   }
 
   @override
@@ -89,15 +92,63 @@ class UpdatePackageTypeDialogState extends State<UpdatePackageTypeDialog> {
       return;
     }
 
-    // PackageTypeModel newPackageType = PackageTypeModel(
-    //   id: widget.item.id,
-    //   type: _typeController.text,
-    //   description: _descriptionController.text,
-    //   promotion: promotion,
-    //   days: days,
-    // );
-    // widget.presenter.updatePackageType(newPackageType);
-    Navigator.of(context).pop();
+    RenewalPackageModel newRenewalPackage = RenewalPackageModel(
+      id: widget.item.id,
+      type: _typeController.text,
+      description: _descriptionController.text,
+      promotion: promotion,
+      days: days,
+    );
+    renewalPackagePresenter
+        .checkRenewalPackageNameExistsOnUpdate(
+            widget.item.id, _typeController.text)
+        .then((value) {
+      value != true
+          ? renewalPackagePresenter.update(newRenewalPackage).then((value) {
+              Navigator.of(context).pop();
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Thành Công!'),
+                    content: const Text('Cập nhật gói gia hạn thành công!'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          renewalPackagePresenter
+                              .getAllRenewalPackage()
+                              .then((value) {
+                            Navigator.of(context).pop();
+                            widget.reload();
+                          });
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            })
+          : showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Tên gói gia hạn đã tồn tại!'),
+                  content:
+                      const Text('Tên gói gia hạn đã tồn tại trong hệ thống!'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        widget.reload();
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                );
+              },
+            );
+    });
   }
 
   @override
@@ -123,8 +174,7 @@ class UpdatePackageTypeDialogState extends State<UpdatePackageTypeDialog> {
           ),
           TextField(
             controller: _daysController,
-            decoration: const InputDecoration(
-                labelText: 'Số ngày sử dụng'),
+            decoration: const InputDecoration(labelText: 'Số ngày sử dụng'),
             keyboardType: TextInputType.number,
           ),
         ],

@@ -1,49 +1,50 @@
+import 'package:crawler_web/global/global_data.dart';
+import 'package:crawler_web/views/admin/component/renewal_package_manager/add_renewal_package_dialog.dart';
+import 'package:crawler_web/views/admin/component/renewal_package_manager/renewal_package_manager_item.dart';
 import 'package:flutter/material.dart';
 
 class RenewalPackageManagerTab extends StatefulWidget {
   const RenewalPackageManagerTab({super.key});
 
   @override
-  State<RenewalPackageManagerTab> createState() => _RenewalPackageManagerTabState();
+  State<RenewalPackageManagerTab> createState() =>
+      _RenewalPackageManagerTabState();
 }
 
 class _RenewalPackageManagerTabState extends State<RenewalPackageManagerTab> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('gói gia hạn'),
-    );
     return Stack(
       children: [
         Column(
           children: [
-            // Expanded(
-            //   child: widget.presenter.isHandling
-            //       ? const Center(child: CircularProgressIndicator())
-            //       : ListView.builder(
-            //           padding: const EdgeInsets.all(8.0),
-            //           itemCount: (widget.presenter.packageTypes.length / 3).ceil(),
-            //           itemBuilder: (context, rowIndex) {
-            //             final startIndex = rowIndex * 3;
-            //             final endIndex = startIndex + 3;
-            //             final rowItems = widget.presenter.packageTypes.sublist(
-            //               startIndex,
-            //               endIndex > widget.presenter.packageTypes.length
-            //                   ? widget.presenter.packageTypes.length
-            //                   : endIndex,
-            //             );
-            //             return Row(
-            //               mainAxisAlignment: MainAxisAlignment.center,
-            //               children: rowItems.map((packageType) {
-            //                 return PackageTypeAdminItem(
-            //                   presenter: widget.presenter,
-            //                   item: packageType,
-            //                 );
-            //               }).toList(),
-            //             );
-            //           },
-            //         ),
-            // ),
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.all(8.0),
+                itemCount: (renewalPackages.length / 3).ceil(),
+                itemBuilder: (context, rowIndex) {
+                  final startIndex = rowIndex * 3;
+                  final endIndex = startIndex + 3;
+                  final rowItems = renewalPackages.sublist(
+                    startIndex,
+                    endIndex > renewalPackages.length
+                        ? renewalPackages.length
+                        : endIndex,
+                  );
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: rowItems.map((renewalPackage) {
+                      return RenewalPackageManagerItem(
+                        item: renewalPackage,
+                        reload: () {
+                          setState(() {});
+                        },
+                      );
+                    }).toList(),
+                  );
+                },
+              ),
+            ),
           ],
         ),
         Positioned(
@@ -51,12 +52,16 @@ class _RenewalPackageManagerTabState extends State<RenewalPackageManagerTab> {
           right: 32.0,
           child: GestureDetector(
             onTap: () {
-              // showDialog(
-              //   context: context,
-              //   builder: (BuildContext context) {
-              //     return AddPackageTypeDialog(presenter: widget.presenter);
-              //   },
-              // );
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AddRenewalPackageDialog(
+                    reload: () {
+                      setState(() {});
+                    },
+                  );
+                },
+              );
             },
             child: Container(
               width: 56.0,

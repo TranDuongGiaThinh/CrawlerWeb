@@ -1,15 +1,24 @@
+import 'package:crawler_web/global/global_data.dart';
+import 'package:crawler_web/models/renewal_package.dart';
+import 'package:crawler_web/views/admin/component/renewal_package_manager/update_package_type.dart';
 import 'package:flutter/material.dart';
 
-class PackageTypeManagerItem extends StatelessWidget {
-  const PackageTypeManagerItem({
+class RenewalPackageManagerItem extends StatefulWidget {
+  const RenewalPackageManagerItem({
     super.key,
-    // required this.item,
-    // required this.presenter,
+    required this.item,
+    required this.reload,
   });
 
-  // final PackageTypeModel item;
-  // final AdminPresenter presenter;
+  final RenewalPackageModel item;
+  final Function reload;
 
+  @override
+  State<RenewalPackageManagerItem> createState() =>
+      _RenewalPackageManagerItemState();
+}
+
+class _RenewalPackageManagerItemState extends State<RenewalPackageManagerItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,35 +40,35 @@ class PackageTypeManagerItem extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Text(
-                  //   item.type,
-                  //   style: const TextStyle(
-                  //     fontSize: 32,
-                  //     fontWeight: FontWeight.bold,
-                  //   ),
-                  //   textAlign: TextAlign.center,
-                  //   maxLines: 2,
-                  //   overflow: TextOverflow.ellipsis,
-                  // ),
-                  // const SizedBox(height: 8),
-                  // Text(
-                  //   item.description,
-                  //   style: const TextStyle(
-                  //     fontWeight: FontWeight.bold,
-                  //     fontSize: 18,
-                  //   ),
-                  // ),
-                  // const SizedBox(height: 4),
-                  // Text(
-                  //   'Khuyến mãi ${item.promotion}%',
-                  //   style: const TextStyle(fontSize: 16),
-                  // ),
-                  // const SizedBox(height: 4),
-                  // Text(
-                  //   '${item.days} ngày',
-                  //   style: const TextStyle(fontSize: 16),
-                  //   textAlign: TextAlign.center,
-                  // ),
+                  Text(
+                    widget.item.type,
+                    style: const TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    widget.item.description,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Khuyến mãi ${widget.item.promotion}%',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${widget.item.days} ngày',
+                    style: const TextStyle(fontSize: 16),
+                    textAlign: TextAlign.center,
+                  ),
                 ],
               ),
               Row(
@@ -67,13 +76,15 @@ class PackageTypeManagerItem extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // showDialog(
-                      //   context: context,
-                      //   builder: (BuildContext context) {
-                      //     return UpdatePackageTypeDialog(
-                      //         presenter: presenter, item: item);
-                      //   },
-                      // );
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return UpdateRenewalPackageDialog(
+                            item: widget.item,
+                            reload: widget.reload,
+                          );
+                        },
+                      );
                     },
                     style: ButtonStyle(
                       backgroundColor: WidgetStateProperty.all<Color>(
@@ -114,11 +125,60 @@ class PackageTypeManagerItem extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  // presenter.deletePackageType(item.id);
+                                  renewalPackagePresenter
+                                      .delete(widget.item)
+                                      .then((value) {
+                                    if (value == true) {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text('Thành Công!'),
+                                            content: const Text(
+                                                'Xóa gói gia hạn thành công!'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  renewalPackagePresenter
+                                                      .getAllRenewalPackage()
+                                                      .then((value) {
+                                                    Navigator.of(context).pop();
+                                                    widget.reload();
+                                                  });
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    } else {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text('Thất bại!'),
+                                            content: const Text(
+                                                'Xóa gói gia hạn thất bại!'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
+                                  });
                                   Navigator.of(context).pop();
                                 },
-                                child: const Text('Xóa',
-                                    style: TextStyle(color: Colors.red)),
+                                child: const Text(
+                                  'Xóa',
+                                  style: TextStyle(color: Colors.red),
+                                ),
                               ),
                             ],
                           );

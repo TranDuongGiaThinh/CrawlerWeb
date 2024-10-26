@@ -29,6 +29,11 @@ class _AdminScreenState extends State<AdminScreen>
           userTypes = value;
         });
       });
+      renewalPackagePresenter.getAllRenewalPackage().then((value) {
+        setState(() {
+          renewalPackages = value;
+        });
+      });
     }
 
     tabController = TabController(length: 6, vsync: this);
