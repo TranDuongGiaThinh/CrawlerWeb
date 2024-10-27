@@ -13,6 +13,9 @@ import 'package:crawler_web/presenters/user_type_presenter.dart';
 import '../models/check_box_item.dart';
 import '../models/package_user_model.dart';
 
+// Danh sách người dùng
+List<UserModel> users = [];
+
 // Trạng thái loading của trang web
 bool isLoading = false;
 
@@ -60,6 +63,7 @@ ItemPresenter itemPresenter = ItemPresenter();
 
 // Hàm reset các biến toàn cục
 cleanDataOfUser() {
+  users = [];
   isLoading = false;
   userLogin = null;
   userTypes = [];

@@ -43,9 +43,10 @@ const String updateAppFilePathAPI = '$baseURL/api/setting/update-file-app';
 const String downloadInstructionAPI = '$baseURL/setting/download-instruction';
 
 // lấy danh sách user
-const String getAllUserAPI = '$baseURL/api/user/get-all';
-const String lockUserAPI = '$baseURL/api/user/lock/';
-const String unlockUserAPI = '$baseURL/api/user/unlock/';
+const String getAllUserAPI = '$baseURL/user/get-all-user';
+const String lockUserAPI = '$baseURL/user/lock-user/';
+const String unlockUserAPI = '$baseURL/user/unlock-user/';
+const String searchUserAPI = '$baseURL/user/search-user/';
 
 // Cập nhật file C#
 const String updateInstructionFilePathAPI = '$baseURL/api/setting/update-file-instruction';

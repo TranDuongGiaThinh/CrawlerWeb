@@ -23,19 +23,6 @@ class _AdminScreenState extends State<AdminScreen>
   void initState() {
     super.initState();
 
-    if (userTypes.isEmpty) {
-      userTypePresenter.getAllUserTypes().then((value) {
-        setState(() {
-          userTypes = value;
-        });
-      });
-      renewalPackagePresenter.getAllRenewalPackage().then((value) {
-        setState(() {
-          renewalPackages = value;
-        });
-      });
-    }
-
     tabController = TabController(length: 6, vsync: this);
   }
 

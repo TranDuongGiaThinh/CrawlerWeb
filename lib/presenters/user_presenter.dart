@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../config/config.dart';
+import '../global/global_data.dart';
 import '../models/user_model.dart';
 
 class UserPresenter {
@@ -25,12 +26,11 @@ class UserPresenter {
     checkLoginInput(reload);
 
     if (message.isEmpty) {
-      // Thực hiện đăng nhập khi đầu vào hợp lệ
       UserModel? user = await checkLogin(reload);
 
       return user;
     }
-    
+
     return null;
   }
 
@@ -203,6 +203,84 @@ class UserPresenter {
     } catch (error) {
       if (kDebugMode) {
         print("Lỗi khi đăng ký tài khoản: $error");
+      }
+      return null;
+    }
+  }
+
+  Future<List<UserModel>> getAllUser() async {
+    try {
+      final url = Uri.parse(getAllUserAPI);
+
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body)['users'];
+        users = data.map((json) => UserModel.fromJson(json)).toList();
+        return users;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Lỗi khi khóa tài khoản người dùng: $e");
+      }
+      return [];
+    }
+  }
+
+  Future<bool> lockUser(int userId) async {
+    try {
+      final url = Uri.parse('$lockUserAPI$userId');
+
+      final response = await http.patch(url);
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Lỗi khi khóa tài khoản người dùng");
+      }
+      return false;
+    }
+  }
+
+  Future<bool> unlockUser(int userId) async {
+    try {
+      final url = Uri.parse('$unlockUserAPI$userId');
+
+      final response = await http.patch(url);
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Lỗi khi mở khóa tài khoản người dùng");
+      }
+      return false;
+    }
+  }
+
+  Future<UserModel?> search(String username) async {
+    try {
+      final url = Uri.parse('$searchUserAPI$username');
+
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        return null;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Lỗi khi tìm kiếm người dùng");
       }
       return null;
     }

@@ -13,6 +13,19 @@ class RenewalPackageManagerTab extends StatefulWidget {
 
 class _RenewalPackageManagerTabState extends State<RenewalPackageManagerTab> {
   @override
+  void initState() {
+    super.initState();
+
+    if (renewalPackages.isEmpty) {
+      renewalPackagePresenter.getAllRenewalPackage().then((value) {
+        setState(() {
+          renewalPackages = value;
+        });
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Stack(
       children: [

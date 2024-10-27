@@ -102,6 +102,27 @@ class UpdateUserTypeDialogState extends State<UpdateUserTypeDialog> {
       return;
     }
 
+    if (price == 0 ){
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Giá gói không hợp lệ'),
+            content: const Text('Giá gói thành viên phải lớn hơn 0!'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
     UserTypeModel newUserType = UserTypeModel(
       id: widget.item.id,
       type: _typeController.text,
@@ -179,6 +200,7 @@ class UpdateUserTypeDialogState extends State<UpdateUserTypeDialog> {
             controller: _priceController,
             decoration: const InputDecoration(labelText: 'Giá gói'),
             keyboardType: TextInputType.number,
+            enabled: _priceController.text != "0",
           ),
           TextField(
             controller: _maxConfigController,

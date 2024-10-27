@@ -9,7 +9,7 @@ import '../global/global_data.dart';
 class PackageUserPresenter {
   PackageUserPresenter();
 
-  Future<void> getAllPackageUserOfUser(int userId) async {
+  Future<List<PackageUserModel>> getAllPackageUserOfUser(int userId) async {
     try {
       final response =
           await http.get(Uri.parse("$getAllPackageUserOfUserAPI$userId"));
@@ -22,15 +22,19 @@ class PackageUserPresenter {
         if (packageUsers.isNotEmpty) {
           packageUserIsUsing = getPackageUserIsUsing();
         }
+
+        return packageUsers;
       } else {
         if (kDebugMode) {
           print('Lỗi tải packageUsers: ${response.statusCode}');
         }
+        return [];
       }
     } catch (error) {
       if (kDebugMode) {
         print(error);
       }
+      return [];
     }
   }
 
@@ -73,7 +77,8 @@ class PackageUserPresenter {
     }
   }
 
-  Future<PackageUserModel?> createPackageUser(PackageUserModel packageUser) async {
+  Future<PackageUserModel?> createPackageUser(
+      PackageUserModel packageUser) async {
     try {
       final url = Uri.parse(creatPackageUserAPI);
 

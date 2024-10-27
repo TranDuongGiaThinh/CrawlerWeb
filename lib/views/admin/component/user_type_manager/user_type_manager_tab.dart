@@ -13,6 +13,19 @@ class UserTypeManagerTab extends StatefulWidget {
 
 class _UserTypeManagerTabState extends State<UserTypeManagerTab> {
   @override
+  void initState() {
+    super.initState();
+
+    if (userTypes.isEmpty) {
+      userTypePresenter.getAllUserTypes().then((value) {
+        setState(() {
+          userTypes = value;
+        });
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
