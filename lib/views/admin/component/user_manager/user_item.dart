@@ -165,6 +165,11 @@ class _UserItemState extends State<UserItem> {
             ),
             const SizedBox(height: 8),
             Text(
+              'Username: ${widget.user.username}',
+              style: const TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 8),
+            Text(
               'Email: ${widget.user.email}',
               style: const TextStyle(fontSize: 16),
             ),

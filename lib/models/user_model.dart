@@ -32,9 +32,9 @@ class UserModel {
       phone: json['phone'] ?? '',
       locked: json['locked'],
       isAdmin: json['is_admin'] ?? false,
-      configCount: json['config_count'],
-      exportCount: json['export_count'],
-      autoConfigCount: json['auto_config_count'],
+      configCount: json['config_count']??0,
+      exportCount: json['export_count']??0,
+      autoConfigCount: json['auto_config_count']??0,
     );
   }
 }

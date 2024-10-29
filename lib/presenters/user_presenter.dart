@@ -267,22 +267,27 @@ class UserPresenter {
     }
   }
 
-  Future<UserModel?> search(String username) async {
+  Future<List<UserModel>> search(String username) async {
     try {
       final url = Uri.parse('$searchUserAPI$username');
 
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        return null;
+        final List<dynamic>? data = json.decode(response.body)['users'];
+        if (data == null) {
+          return [];
+        }
+        users = data.map((json) => UserModel.fromJson(json)).toList();
+        return users;
       } else {
-        return null;
+        return [];
       }
     } catch (e) {
       if (kDebugMode) {
-        print("Lỗi khi tìm kiếm người dùng");
+        print("Lỗi khi tìm kiếm người dùng: $e");
       }
-      return null;
+      return [];
     }
   }
 }

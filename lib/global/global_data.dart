@@ -54,6 +54,9 @@ List<CheckBoxItem> websiteItems = [
   CheckBoxItem(id: null, name: "Chọn website")
 ];
 
+// Nội dung trang giới thiệu
+String? introduction;
+
 // Các presenter
 UserPresenter userPresenter = UserPresenter();
 UserTypePresenter userTypePresenter = UserTypePresenter();
