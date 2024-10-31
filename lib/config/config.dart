@@ -60,3 +60,7 @@ const String downloadInstructionAPI = '$baseURL/setting/download-instruction';
 const String updateIntroductionAPI = '$baseURL/setting/update-introduction';
 const String uploadAppAPI = '$baseURL/setting/update-app';
 const String uploadInstructionAPI = '$baseURL/setting/update-instruction';
+
+// Backups
+const String createBackupAPI = '$baseURL/backup/create-backup';
+const String restoreAPI = '$baseURL/backup/restore';

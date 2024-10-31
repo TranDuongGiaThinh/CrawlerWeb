@@ -22,12 +22,29 @@ class SettingPresenter {
     }
   }
 
-  static Future<bool> uploadApp() async {
+  static Future<bool> uploadApp(String filename, Uint8List fileBytes) async {
     try {
-      return true;
+      // Tạo MultipartFile từ file bytes
+      final MultipartFile multipartFile = MultipartFile.fromBytes(
+        fileBytes,
+        filename: filename,
+      );
+
+      // Tạo FormData với file
+      final formData = FormData.fromMap({"file": multipartFile});
+
+      // Khởi tạo Dio và gọi API
+      Dio dio = Dio();
+      final response = await dio.patch(uploadAppAPI, data: formData);
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
     } catch (e) {
       if (kDebugMode) {
-        print('upload ứng dụng thất bại!');
+        print('Lỗi khi upload file ứng dụng: $e');
       }
       return false;
     }

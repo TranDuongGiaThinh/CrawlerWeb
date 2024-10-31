@@ -1,4 +1,5 @@
 import 'package:crawler_web/views/admin/component/app_manager/app_manager_tab.dart';
+import 'package:crawler_web/views/admin/component/backup_manager/backup_manager_tab.dart';
 import 'package:crawler_web/views/admin/component/instruction_manager/instruction_manager_tab.dart';
 import 'package:crawler_web/views/admin/component/introduction_manager/introduction_manager_tab.dart';
 import 'package:crawler_web/views/admin/component/renewal_package_manager/renewal_package_manager_tab.dart';
@@ -23,7 +24,7 @@ class _AdminScreenState extends State<AdminScreen>
   void initState() {
     super.initState();
 
-    tabController = TabController(length: 6, vsync: this);
+    tabController = TabController(length: 7, vsync: this);
   }
 
   @override
@@ -144,6 +145,12 @@ class _AdminScreenState extends State<AdminScreen>
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
+            Tab(
+              child: Text(
+                'Backup',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
           ],
         ),
       ),
@@ -156,6 +163,7 @@ class _AdminScreenState extends State<AdminScreen>
           AppManagerTab(),
           InstructionManagerTab(),
           UserManagerTab(),
+          BackupManagerTap(),
         ],
       ),
     );
