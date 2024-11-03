@@ -129,6 +129,12 @@ class _AdminScreenState extends State<AdminScreen>
             ),
             Tab(
               child: Text(
+                'Người Dùng',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Tab(
+              child: Text(
                 'Ứng Dụng',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -136,12 +142,6 @@ class _AdminScreenState extends State<AdminScreen>
             Tab(
               child: Text(
                 'Hướng Dẫn',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Tab(
-              child: Text(
-                'Người Dùng',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
@@ -160,10 +160,10 @@ class _AdminScreenState extends State<AdminScreen>
           IntroductionManagerTab(),
           UserTypeManagerTab(),
           RenewalPackageManagerTab(),
+          UserManagerTab(),
           AppManagerTab(),
           InstructionManagerTab(),
-          UserManagerTab(),
-          BackupManagerTap(),
+          BackupManagerTab(),
         ],
       ),
     );
