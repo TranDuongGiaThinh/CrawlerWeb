@@ -11,20 +11,19 @@ class AppManagerTab extends StatefulWidget {
 }
 
 class _AppManagerTabState extends State<AppManagerTab> {
-  String? selectedFileName;
+  PlatformFile? selectedFile;
 
   selectFileAndUpload() async {
     // Hiển thị bộ chọn tệp
     final result = await FilePicker.platform.pickFiles();
     if (result != null && result.files.isNotEmpty) {
       setState(() {
-        selectedFileName = result.files.first.name;
+        selectedFile = result.files.first;
       });
 
       // Tải lên nội dung file
       final uploadSuccess = await SettingPresenter.uploadApp(
-        selectedFileName!,
-        result.files.first.bytes!,
+        selectedFile!
       );
 
       // Hiển thị thông báo kết quả
@@ -59,10 +58,10 @@ class _AppManagerTabState extends State<AppManagerTab> {
               icon: const Icon(Icons.upload_file),
               label: const Text('Chọn file và tải lên'),
             ),
-            if (selectedFileName != null)
+            if (selectedFile != null)
               Padding(
                 padding: const EdgeInsets.only(top: 10),
-                child: Text('Tệp đã chọn: $selectedFileName',
+                child: Text('Tệp đã chọn: ${selectedFile!.name}',
                     style: const TextStyle(fontSize: 16)),
               ),
           ],

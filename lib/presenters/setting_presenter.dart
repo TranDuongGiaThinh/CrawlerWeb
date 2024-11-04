@@ -1,6 +1,7 @@
 import 'package:crawler_web/config/config.dart';
-import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 
 class SettingPresenter {
   static loadIntroduction() async {
@@ -22,22 +23,20 @@ class SettingPresenter {
     }
   }
 
-  static Future<bool> uploadApp(String filename, Uint8List fileBytes) async {
+  static Future<bool> uploadApp(PlatformFile file) async {
     try {
-      // Tạo MultipartFile từ file bytes
-      final MultipartFile multipartFile = MultipartFile.fromBytes(
-        fileBytes,
-        filename: filename,
-      );
+      var uri = Uri.parse(uploadAppAPI);
+      var request = http.MultipartRequest('PATCH', uri)
+        ..files.add(http.MultipartFile.fromBytes(
+          'file',
+          file.bytes!,
+          filename: file.name,
+        ));
 
-      // Tạo FormData với file
-      final formData = FormData.fromMap({"file": multipartFile});
+      var response = await request.send();
+      var responseBody = await http.Response.fromStream(response);
 
-      // Khởi tạo Dio và gọi API
-      Dio dio = Dio();
-      final response = await dio.patch(uploadAppAPI, data: formData);
-
-      if (response.statusCode == 200) {
+      if (responseBody.statusCode == 200) {
         return true;
       } else {
         return false;
@@ -50,23 +49,20 @@ class SettingPresenter {
     }
   }
 
-  static Future<bool> uploadInstruction(
-      String filename, Uint8List fileBytes) async {
+  static Future<bool> uploadInstruction(PlatformFile file) async {
     try {
-      // Tạo MultipartFile từ file bytes
-      final MultipartFile multipartFile = MultipartFile.fromBytes(
-        fileBytes,
-        filename: filename,
-      );
+      var uri = Uri.parse(uploadInstructionAPI);
+      var request = http.MultipartRequest('PATCH', uri)
+        ..files.add(http.MultipartFile.fromBytes(
+          'file',
+          file.bytes!,
+          filename: file.name,
+        ));
 
-      // Tạo FormData với file
-      final formData = FormData.fromMap({"file": multipartFile});
+      var response = await request.send();
+      var responseBody = await http.Response.fromStream(response);
 
-      // Khởi tạo Dio và gọi API
-      Dio dio = Dio();
-      final response = await dio.patch(uploadInstructionAPI, data: formData);
-
-      if (response.statusCode == 200) {
+      if (responseBody.statusCode == 200) {
         return true;
       } else {
         return false;

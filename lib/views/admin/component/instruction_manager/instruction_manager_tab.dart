@@ -11,21 +11,19 @@ class InstructionManagerTab extends StatefulWidget {
 }
 
 class _InstructionManagerTabState extends State<InstructionManagerTab> {
-  String? selectedFileName;
+  PlatformFile? selectedFile;
 
   selectFileAndUpload() async {
     // Hiển thị bộ chọn tệp
     final result = await FilePicker.platform.pickFiles();
     if (result != null && result.files.isNotEmpty) {
       setState(() {
-        selectedFileName = result.files.first.name;
+        selectedFile = result.files.first;
       });
 
       // Tải lên nội dung file
-      final uploadSuccess = await SettingPresenter.uploadInstruction(
-        selectedFileName!,
-        result.files.first.bytes!,
-      );
+      final uploadSuccess =
+          await SettingPresenter.uploadInstruction(selectedFile!);
 
       // Hiển thị thông báo kết quả
       // ignore: use_build_context_synchronously
@@ -59,10 +57,10 @@ class _InstructionManagerTabState extends State<InstructionManagerTab> {
               icon: const Icon(Icons.upload_file),
               label: const Text('Chọn file và tải lên'),
             ),
-            if (selectedFileName != null)
+            if (selectedFile != null)
               Padding(
                 padding: const EdgeInsets.only(top: 10),
-                child: Text('Tệp đã chọn: $selectedFileName',
+                child: Text('Tệp đã chọn: ${selectedFile!.name}',
                     style: const TextStyle(fontSize: 16)),
               ),
           ],
