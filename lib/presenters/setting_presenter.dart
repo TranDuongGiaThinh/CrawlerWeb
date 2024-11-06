@@ -1,23 +1,44 @@
+import 'dart:convert';
+
 import 'package:crawler_web/config/config.dart';
+import 'package:crawler_web/global/global_data.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class SettingPresenter {
-  static loadIntroduction() async {
-    try {} catch (e) {
+  static Future<void> loadIntroduction() async {
+    try {
+      final response = await http.get(Uri.parse(getIntroductionAPI));
+
+      if (response.statusCode == 200) {
+        introduction = jsonDecode(response.body)['introduction'];
+      }
+    } catch (e) {
       if (kDebugMode) {
-        print('Tải trang giới thiệu thất bại!');
+        print('lỗi khi tải nội dung trang giới thiệu $e');
       }
     }
   }
 
-  static Future<bool> updateIntroduction() async {
+  static Future<bool> updateIntroduction(String htmlData) async {
     try {
-      return true;
+      final url = Uri.parse(updateIntroductionAPI);
+
+      final response = await http.patch(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({"introduction": htmlData}),
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
     } catch (e) {
       if (kDebugMode) {
-        print('Cập nhật trang giới thiệu thất bại!');
+        print('Cập nhật trang giới thiệu thất bại! $e');
       }
       return false;
     }

@@ -1,4 +1,7 @@
+import 'package:crawler_web/global/global_data.dart';
+import 'package:crawler_web/presenters/setting_presenter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class IntroductionTab extends StatefulWidget {
   const IntroductionTab({super.key});
@@ -9,25 +12,27 @@ class IntroductionTab extends StatefulWidget {
 
 class _IntroductionTabState extends State<IntroductionTab> {
   @override
+  void initState() {
+    super.initState();
+
+    SettingPresenter.loadIntroduction().then((value) {
+      setState(() {});
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        width: 500,
-        height: 600,
-        child: const Card(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Trang Giới Thiệu")
-              ],
+    return introduction == null
+        ? const Center(
+            child: Center(
+              child: Text("Trang giới thiệu đang được cập nhật!"),
             ),
-          ),
-        ),
-      ),
-    );
+          )
+        : Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: HtmlWidget(
+              introduction!,
+            ),
+          );
   }
 }

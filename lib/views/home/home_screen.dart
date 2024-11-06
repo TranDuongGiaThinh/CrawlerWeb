@@ -43,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen>
         return Container();
       }
     }
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
