@@ -1,5 +1,8 @@
+import 'dart:ui_web';
+
 import 'package:crawler_web/presenters/setting_presenter.dart';
 import 'package:flutter/material.dart';
+import 'dart:html';
 
 class IntroductionManagerTab extends StatefulWidget {
   const IntroductionManagerTab({super.key});
@@ -10,6 +13,21 @@ class IntroductionManagerTab extends StatefulWidget {
 
 class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
   TextEditingController textController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Đăng ký viewFactory với tên 'ckeditor-view'
+    platformViewRegistry.registerViewFactory(
+      'ckeditor-view',
+      (int viewId) => IFrameElement()
+        ..src = 'assets/web/ckeditor.html'
+        ..style.border = 'none'
+        ..style.width = '100%'
+        ..style.height = '100%',
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +59,7 @@ class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
                     .then((value) {
                   value
                       ? showDialog(
+                          // ignore: use_build_context_synchronously
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
@@ -59,6 +78,7 @@ class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
                           },
                         )
                       : showDialog(
+                          // ignore: use_build_context_synchronously
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
@@ -83,15 +103,9 @@ class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
           ],
         ),
         const SizedBox(height: 20),
-        Center(
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            padding: const EdgeInsets.only(left: 100, right: 100),
-            child: const Text('Cập nhật trang giới thiệu'),
-          ),
-        )
+        const Expanded(
+          child: HtmlElementView(viewType: 'ckeditor-view'),
+        ),
       ],
     );
   }
