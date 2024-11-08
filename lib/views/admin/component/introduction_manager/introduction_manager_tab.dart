@@ -2,6 +2,7 @@ import 'dart:ui_web';
 
 import 'package:crawler_web/presenters/setting_presenter.dart';
 import 'package:flutter/material.dart';
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html';
 
 class IntroductionManagerTab extends StatefulWidget {
@@ -13,6 +14,7 @@ class IntroductionManagerTab extends StatefulWidget {
 
 class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
   TextEditingController textController = TextEditingController();
+  bool isShowMessage = false;
 
   @override
   void initState() {
@@ -27,6 +29,13 @@ class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
         ..style.width = '100%'
         ..style.height = '100%',
     );
+
+    // Lắng nghe tin nhắn từ CKEditor để nhận dữ liệu
+    window.onMessage.listen((event) {
+      setState(() {
+        textController.text = event.data ?? '';
+      });
+    });
   }
 
   @override
@@ -57,23 +66,30 @@ class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
               onPressed: () {
                 SettingPresenter.updateIntroduction(textController.text)
                     .then((value) {
+                  isShowMessage = true;
+                  setState(() {});
                   value
                       ? showDialog(
                           // ignore: use_build_context_synchronously
                           context: context,
                           builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Thành Công!'),
-                              content: const Text(
-                                  'Cập nhật nội dung trang giới thiệu thành công!'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
+                            return MouseRegion(
+                              cursor: SystemMouseCursors.click,
+                              child: AlertDialog(
+                                title: const Text('Thành Công!'),
+                                content: const Text(
+                                    'Cập nhật nội dung trang giới thiệu thành công!'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      isShowMessage = false;
+                                      setState(() {});
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
                             );
                           },
                         )
@@ -81,18 +97,23 @@ class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
                           // ignore: use_build_context_synchronously
                           context: context,
                           builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Thất Bại!'),
-                              content: const Text(
-                                  'Cập nhật nội dung trang giới thiệu thất bại!'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
+                            return MouseRegion(
+                              cursor: SystemMouseCursors.click,
+                              child: AlertDialog(
+                                title: const Text('Thất Bại!'),
+                                content: const Text(
+                                    'Cập nhật nội dung trang giới thiệu thất bại!'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      isShowMessage = false;
+                                      setState(() {});
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
                             );
                           },
                         );
@@ -103,9 +124,10 @@ class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
           ],
         ),
         const SizedBox(height: 20),
-        const Expanded(
-          child: HtmlElementView(viewType: 'ckeditor-view'),
-        ),
+        if (!isShowMessage)
+          const Expanded(
+            child: HtmlElementView(viewType: 'ckeditor-view'),
+          ),
       ],
     );
   }

@@ -1,4 +1,3 @@
-<!-- assets/web/ckeditor.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +9,18 @@
 <body>
   <textarea name="content" id="content"></textarea>
   <script>
-    CKEDITOR.replace('content');
+    // Khởi tạo CKEditor
+    const editor = CKEDITOR.replace('content');
+
+    // Tối đa hóa khi khởi tạo
+    editor.on('instanceReady', function() {
+      editor.execCommand('maximize');
+    });
+
+    // Lắng nghe sự kiện khi nội dung thay đổi và gửi dữ liệu qua postMessage
+    editor.on('change', function() {
+      window.parent.postMessage(editor.getData(), '*');
+    });
   </script>
 </body>
 </html>
