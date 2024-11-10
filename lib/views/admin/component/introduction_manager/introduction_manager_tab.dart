@@ -1,5 +1,4 @@
 import 'dart:ui_web';
-
 import 'package:crawler_web/presenters/setting_presenter.dart';
 import 'package:flutter/material.dart';
 // ignore: avoid_web_libraries_in_flutter
@@ -15,25 +14,39 @@ class IntroductionManagerTab extends StatefulWidget {
 class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
   TextEditingController textController = TextEditingController();
   bool isShowMessage = false;
+  bool onTextfield = false;
+  IFrameElement? ckeditorIframe;
 
   @override
   void initState() {
     super.initState();
 
-    // Đăng ký viewFactory với tên 'ckeditor-view'
+    ckeditorIframe = IFrameElement()
+      ..src = 'assets/web/ckeditor.html'
+      ..style.border = 'none'
+      ..style.width = '100%'
+      ..style.height = '100%'
+      ..tabIndex = 0 // Make iframe focusable
+      ..onLoad.listen((event) {
+        // Chỉ gửi dữ liệu sau khi iframe CKEditor đã sẵn sàng
+        SettingPresenter.loadIntroduction().then((value) {
+          setState(() {
+            textController.text = value;
+          });
+          ckeditorIframe?.contentWindow?.postMessage(value, '*');
+        });
+      });
+
     platformViewRegistry.registerViewFactory(
       'ckeditor-view',
-      (int viewId) => IFrameElement()
-        ..src = 'assets/web/ckeditor.html'
-        ..style.border = 'none'
-        ..style.width = '100%'
-        ..style.height = '100%',
+      (int viewId) {
+        return ckeditorIframe!;
+      },
     );
 
-    // Lắng nghe tin nhắn từ CKEditor để nhận dữ liệu
     window.onMessage.listen((event) {
       setState(() {
-        textController.text = event.data ?? '';
+        textController.text = event.data.replaceAll(RegExp(r'\s+'), '') ?? '';
       });
     });
   }
@@ -50,13 +63,34 @@ class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
           children: [
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: TextField(
-                  controller: textController,
-                  decoration: InputDecoration(
-                    labelText: 'Nhập nội dung giới thiệu',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      onTextfield = true;
+                    });
+                  },
+                  child: TextField(
+                    controller: textController,
+                    enabled: onTextfield,
+                    decoration: InputDecoration(
+                      labelText: 'Nhập nội dung giới thiệu',
+                      suffix: GestureDetector(
+                        onTap: () {
+                          ckeditorIframe!.contentWindow!
+                              .postMessage(textController.text, '*');
+                          setState(() {
+                            onTextfield = false;
+                          });
+                        },
+                        child: const Icon(
+                          Icons.refresh,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                   ),
                 ),

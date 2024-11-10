@@ -21,6 +21,18 @@
     editor.on('change', function() {
       window.parent.postMessage(editor.getData(), '*');
     });
+
+    // Lắng nghe sự kiện postMessage từ bên ngoài để cập nhật nội dung vào CKEditor
+    window.addEventListener('message', function(event) {
+      if (event.data === 'focus') {
+            // Di chuyển con trỏ văn bản vào đầu CKEditor khi nhận thông điệp 'focus'
+            editor.model.document.selection.clear();
+            editor.model.document.selection.setSelection( editor.model.document.getRoot() );
+          } else {
+            // Nếu không phải là yêu cầu focus, đưa dữ liệu vào CKEditor
+            editor.setData(event.data);
+          }
+    });
   </script>
 </body>
 </html>

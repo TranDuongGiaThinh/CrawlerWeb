@@ -7,17 +7,20 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class SettingPresenter {
-  static Future<void> loadIntroduction() async {
+  static Future<String> loadIntroduction() async {
     try {
       final response = await http.get(Uri.parse(getIntroductionAPI));
 
       if (response.statusCode == 200) {
         introduction = jsonDecode(response.body)['introduction'];
+        return introduction!;
       }
+      return '';
     } catch (e) {
       if (kDebugMode) {
         print('lỗi khi tải nội dung trang giới thiệu $e');
       }
+      return '';
     }
   }
 
