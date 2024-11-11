@@ -1,4 +1,5 @@
 import 'dart:ui_web';
+import 'package:crawler_web/global/global_data.dart';
 import 'package:crawler_web/presenters/setting_presenter.dart';
 import 'package:flutter/material.dart';
 // ignore: avoid_web_libraries_in_flutter
@@ -26,15 +27,20 @@ class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
       ..style.border = 'none'
       ..style.width = '100%'
       ..style.height = '100%'
-      ..tabIndex = 0 // Make iframe focusable
+      ..tabIndex = 0
       ..onLoad.listen((event) {
-        // Chỉ gửi dữ liệu sau khi iframe CKEditor đã sẵn sàng
-        SettingPresenter.loadIntroduction().then((value) {
-          setState(() {
-            textController.text = value;
+        if (userTypes.isEmpty) {
+          SettingPresenter.loadIntroduction().then((value) {
+            if (isLoading) return;
+            isLoading = true;
+            if (!mounted) return;
+            setState(() {
+              textController.text = value;
+            });
+            isLoading = false;
+            ckeditorIframe?.contentWindow?.postMessage(value, '*');
           });
-          ckeditorIframe?.contentWindow?.postMessage(value, '*');
-        });
+        }
       });
 
     platformViewRegistry.registerViewFactory(
@@ -45,6 +51,7 @@ class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
     );
 
     window.onMessage.listen((event) {
+      if (event.data == null) return;
       setState(() {
         textController.text = event.data.replaceAll(RegExp(r'\s+'), '') ?? '';
       });

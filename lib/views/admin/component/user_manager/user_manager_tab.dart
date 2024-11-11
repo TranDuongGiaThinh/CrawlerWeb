@@ -16,8 +16,11 @@ class _UserManagerTabState extends State<UserManagerTab> {
     super.initState();
 
     if (users.isEmpty) {
+      if (isLoading) return;
+      isLoading = true;
       userPresenter.getAllUser().then((onValue) {
         setState(() {});
+        isLoading = false;
       });
     }
   }

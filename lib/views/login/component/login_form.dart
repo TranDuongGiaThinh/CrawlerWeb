@@ -46,9 +46,11 @@ class LoginFormState extends State<LoginForm> {
                       if (!user.isAdmin)
                         {
                           packageUserPresenter.getAllPackageUserOfUser(user.id),
+                          // ignore: use_build_context_synchronously
                           Navigator.pushReplacementNamed(context, '/')
                         }
                       else
+                        // ignore: use_build_context_synchronously
                         {Navigator.pushReplacementNamed(context, '/admin')}
                     }
                 });

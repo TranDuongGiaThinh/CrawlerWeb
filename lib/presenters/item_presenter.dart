@@ -23,6 +23,8 @@ class ItemPresenter {
 
   getAllItemOfUser(Function reload) async {
     try {
+      if (isLoading) return;
+      isLoading = true;
       await getCheckBoxData(reload);
       final response =
           await http.get(Uri.parse("$getAllItemOfUserAPI${userLogin!.id}"));
@@ -31,6 +33,7 @@ class ItemPresenter {
         final List<dynamic> data = json.decode(response.body)['items'];
         items = data.map((json) => ItemModel.fromJson(json)).toList();
         reload();
+        isLoading = false;
       } else {
         items = [];
         if (kDebugMode) {
@@ -42,18 +45,20 @@ class ItemPresenter {
       if (kDebugMode) {
         print(error);
       }
+      isLoading = false;
     }
   }
 
   getCheckBoxData(Function reload) async {
     try {
+      if (isLoading) return;
+      isLoading = true;
       await fetchCheckBoxDataFromAPI(
         "$getAllConfigOfUserAPI${userLogin!.id}",
         'configs',
         (data) {
           configItems.addAll(data.map((json) => CheckBoxItem.fromJson(json)));
         },
-        reload,
       );
 
       await fetchCheckBoxDataFromAPI(
@@ -63,7 +68,6 @@ class ItemPresenter {
           itemTypes = data.map((json) => ItemTypeModel.fromJson(json)).toList();
           itemTypeItems.addAll(data.map((json) => CheckBoxItem.fromJson(json)));
         },
-        reload,
       );
 
       await fetchCheckBoxDataFromAPI(
@@ -73,8 +77,9 @@ class ItemPresenter {
           websites = data.map((json) => WebsiteModel.fromJson(json)).toList();
           websiteItems.addAll(data.map((json) => CheckBoxItem.fromJson(json)));
         },
-        reload,
       );
+      reload();
+      isLoading = false;
     } catch (error) {
       configItems = [];
       itemTypes = [];
@@ -82,6 +87,7 @@ class ItemPresenter {
       if (kDebugMode) {
         print(error);
       }
+      isLoading = false;
     }
   }
 
@@ -89,7 +95,6 @@ class ItemPresenter {
     String strAPI,
     String key,
     Function(List<dynamic>) onData,
-    Function reload,
   ) async {
     final response = await http.get(Uri.parse(strAPI));
 
@@ -218,6 +223,7 @@ class ItemPresenter {
     Function reload,
   ) async {
     try {
+      if (isLoading) return;
       isLoading = true;
       final queryParams = {"keyword": key};
       final uri = Uri.parse('$getSearchSuggestionsAPI${userLogin!.id}?')
@@ -255,6 +261,7 @@ class ItemPresenter {
 
   search(Function reload) async {
     try {
+      if (isLoading) return;
       isLoading = true;
       final response = await http.post(
           Uri.parse("$searchItemAPI${userLogin!.id}"),

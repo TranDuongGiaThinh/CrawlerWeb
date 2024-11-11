@@ -14,10 +14,13 @@ class _UserTypeTabState extends State<UserTypeTab> {
   void initState() {
     super.initState();
 
+    if (isLoading) return;
+    isLoading = true;
     userTypePresenter.getAllUserTypes().then((value) {
       setState(() {
         userTypes = value;
       });
+      isLoading = false;
     });
   }
 

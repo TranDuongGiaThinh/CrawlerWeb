@@ -17,10 +17,13 @@ class _RenewalPackageManagerTabState extends State<RenewalPackageManagerTab> {
     super.initState();
 
     if (renewalPackages.isEmpty) {
+      if (isLoading) return;
+      isLoading = true;
       renewalPackagePresenter.getAllRenewalPackage().then((value) {
         setState(() {
           renewalPackages = value;
         });
+        isLoading = false;
       });
     }
   }

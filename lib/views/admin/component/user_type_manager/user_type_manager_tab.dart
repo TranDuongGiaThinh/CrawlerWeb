@@ -17,10 +17,13 @@ class _UserTypeManagerTabState extends State<UserTypeManagerTab> {
     super.initState();
 
     if (userTypes.isEmpty) {
+      if (isLoading) return;
+      isLoading = true;
       userTypePresenter.getAllUserTypes().then((value) {
         setState(() {
           userTypes = value;
         });
+        isLoading = false;
       });
     }
   }

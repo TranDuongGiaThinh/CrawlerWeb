@@ -17,6 +17,7 @@ class _IntroductionTabState extends State<IntroductionTab> {
 
     SettingPresenter.loadIntroduction().then((value) {
       setState(() {});
+      isLoading = false;
     });
   }
 

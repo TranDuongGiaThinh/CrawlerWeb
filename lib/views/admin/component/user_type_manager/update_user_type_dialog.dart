@@ -102,7 +102,7 @@ class UpdateUserTypeDialogState extends State<UpdateUserTypeDialog> {
       return;
     }
 
-    if (price == 0 ){
+    if (price == 0) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -147,9 +147,15 @@ class UpdateUserTypeDialogState extends State<UpdateUserTypeDialog> {
                     actions: <Widget>[
                       TextButton(
                         onPressed: () {
+                          if (isLoading) {
+                            return;
+                          }
+                          isLoading = true;
                           userTypePresenter.getAllUserTypes().then((value) {
+                            // ignore: use_build_context_synchronously
                             Navigator.of(context).pop();
                             widget.reload();
+                            isLoading = false;
                           });
                         },
                         child: const Text('OK'),

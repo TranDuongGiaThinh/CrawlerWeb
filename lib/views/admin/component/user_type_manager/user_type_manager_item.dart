@@ -153,6 +153,7 @@ class _UserTypeManagerItemState extends State<UserTypeManagerItem> {
                                         .then((value) {
                                       if (value == true) {
                                         showDialog(
+                                          // ignore: use_build_context_synchronously
                                           context: context,
                                           builder: (BuildContext context) {
                                             return AlertDialog(
@@ -162,12 +163,16 @@ class _UserTypeManagerItemState extends State<UserTypeManagerItem> {
                                               actions: <Widget>[
                                                 TextButton(
                                                   onPressed: () {
+                                                    if (isLoading) return;
+                                                    isLoading = true;
                                                     userTypePresenter
                                                         .getAllUserTypes()
                                                         .then((value) {
+                                                      // ignore: use_build_context_synchronously
                                                       Navigator.of(context)
                                                           .pop();
                                                       widget.reload();
+                                                      isLoading = false;
                                                     });
                                                   },
                                                   child: const Text('OK'),

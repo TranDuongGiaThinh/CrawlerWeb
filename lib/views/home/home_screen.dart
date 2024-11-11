@@ -22,11 +22,14 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
 
+    if (isLoading) return;
+    isLoading = true;
     if (userTypes.isEmpty) {
       userTypePresenter.getAllUserTypes().then((value) {
         setState(() {
           userTypes = value;
         });
+        isLoading = false;
       });
     }
 
@@ -135,6 +138,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         Navigator.of(context).pop();
                                         Future.delayed(Duration.zero, () {
                                           Navigator.pushReplacementNamed(
+                                              // ignore: use_build_context_synchronously
                                               context, '/');
                                         });
                                       },

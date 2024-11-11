@@ -32,9 +32,12 @@ class _UserItemState extends State<UserItem> {
   void initState() {
     super.initState();
 
+    if (isLoading) return;
+    isLoading = true;
     packageUserPresenter.getAllPackageUserOfUser(widget.user.id).then((value) {
       packageUserOfUser = value.reversed.toList();
       setState(() {});
+      isLoading = false;
     });
   }
 

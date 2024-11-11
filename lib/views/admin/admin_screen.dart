@@ -6,7 +6,6 @@ import 'package:crawler_web/views/admin/component/renewal_package_manager/renewa
 import 'package:crawler_web/views/admin/component/user_manager/user_manager_tab.dart';
 import 'package:crawler_web/views/admin/component/user_type_manager/user_type_manager_tab.dart';
 import 'package:flutter/material.dart';
-
 import '../../global/global_data.dart';
 
 class AdminScreen extends StatefulWidget {
@@ -19,6 +18,7 @@ class AdminScreen extends StatefulWidget {
 class _AdminScreenState extends State<AdminScreen>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
+  bool isShowMessage = false;
 
   @override
   void initState() {
@@ -37,6 +37,7 @@ class _AdminScreenState extends State<AdminScreen>
   Widget build(BuildContext context) {
     if (userLogin == null || userLogin?.isAdmin == false) {
       Future.delayed(Duration.zero, () {
+        // ignore: use_build_context_synchronously
         Navigator.pushReplacementNamed(context, '/');
       });
       return Container();
@@ -68,6 +69,9 @@ class _AdminScreenState extends State<AdminScreen>
                 const SizedBox(width: 8.0),
                 GestureDetector(
                   onTap: () {
+                    setState(() {
+                      isShowMessage = true;
+                    });
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -80,6 +84,9 @@ class _AdminScreenState extends State<AdminScreen>
                               child: const Text('Hủy'),
                               onPressed: () {
                                 Navigator.of(context).pop();
+                                setState(() {
+                                  isShowMessage = false;
+                                });
                               },
                             ),
                             TextButton(
@@ -87,7 +94,9 @@ class _AdminScreenState extends State<AdminScreen>
                               onPressed: () {
                                 userLogin = null;
                                 Navigator.of(context).pop();
+                                isShowMessage = false;
                                 Future.delayed(Duration.zero, () {
+                                  // ignore: use_build_context_synchronously
                                   Navigator.pushReplacementNamed(context, '/');
                                 });
                               },
@@ -156,14 +165,14 @@ class _AdminScreenState extends State<AdminScreen>
       ),
       body: TabBarView(
         controller: tabController,
-        children: const [
-          IntroductionManagerTab(),
-          UserTypeManagerTab(),
-          RenewalPackageManagerTab(),
-          UserManagerTab(),
-          AppManagerTab(),
-          InstructionManagerTab(),
-          BackupManagerTab(),
+        children: [
+          !isShowMessage ? const IntroductionManagerTab() : Container(),
+          const UserTypeManagerTab(),
+          const RenewalPackageManagerTab(),
+          const UserManagerTab(),
+          const AppManagerTab(),
+          const InstructionManagerTab(),
+          const BackupManagerTab(),
         ],
       ),
     );

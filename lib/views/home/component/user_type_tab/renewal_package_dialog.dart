@@ -39,6 +39,8 @@ class RenewalPackageDialogState extends State<RenewalPackageDialog> {
   }
 
   loadRenewalPackages() {
+    if (isLoading) return;
+    isLoading = true;
     renewalPackagePresenter.getAllRenewalPackage().then((value) {
       renewalPackages = value;
 
@@ -46,13 +48,17 @@ class RenewalPackageDialogState extends State<RenewalPackageDialog> {
 
       checkActivePackageStatus().then((value) {
         setState(() {});
+        isLoading = false;
       });
     });
   }
 
   Future<void> checkActivePackageStatus() async {
     if (userLogin != null) {
+      if (isLoading) return;
+      isLoading = true;
       await packageUserPresenter.getAllPackageUserOfUser(userLogin!.id);
+      isLoading = false;
     }
 
     if (packageUserIsUsing != null) {

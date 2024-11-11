@@ -139,11 +139,15 @@ class _RenewalPackageManagerItemState extends State<RenewalPackageManagerItem> {
                                             actions: <Widget>[
                                               TextButton(
                                                 onPressed: () {
+                                                  if (isLoading) return;
+                                                  isLoading = true;
                                                   renewalPackagePresenter
                                                       .getAllRenewalPackage()
                                                       .then((value) {
+                                                    // ignore: use_build_context_synchronously
                                                     Navigator.of(context).pop();
                                                     widget.reload();
+                                                    isLoading = false;
                                                   });
                                                 },
                                                 child: const Text('OK'),
