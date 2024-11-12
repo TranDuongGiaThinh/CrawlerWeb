@@ -30,9 +30,9 @@ class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
       ..tabIndex = 0
       ..onLoad.listen((event) {
         if (userTypes.isEmpty) {
+          if (isLoading) return;
+          isLoading = true;
           SettingPresenter.loadIntroduction().then((value) {
-            if (isLoading) return;
-            isLoading = true;
             if (!mounted) return;
             setState(() {
               textController.text = value;
@@ -52,8 +52,9 @@ class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
 
     window.onMessage.listen((event) {
       if (event.data == null) return;
+      if (!mounted) return;
       setState(() {
-        textController.text = event.data.replaceAll(RegExp(r'\s+'), '') ?? '';
+        textController.text = event.data.replaceAll(RegExp(r'>\s+<'), '><') ?? '';
       });
     });
   }
@@ -82,19 +83,6 @@ class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
                     enabled: onTextfield,
                     decoration: InputDecoration(
                       labelText: 'Nhập nội dung giới thiệu',
-                      suffix: GestureDetector(
-                        onTap: () {
-                          ckeditorIframe!.contentWindow!
-                              .postMessage(textController.text, '*');
-                          setState(() {
-                            onTextfield = false;
-                          });
-                        },
-                        child: const Icon(
-                          Icons.refresh,
-                          color: Colors.deepPurpleAccent,
-                        ),
-                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -103,6 +91,20 @@ class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
                 ),
               ),
             ),
+            ElevatedButton(
+              onPressed: () {
+                ckeditorIframe!.contentWindow!
+                    .postMessage(textController.text, '*');
+                setState(() {
+                  onTextfield = false;
+                });
+              },
+              child: const Icon(
+                Icons.refresh,
+                color: Colors.deepPurpleAccent,
+              ),
+            ),
+            const SizedBox(width: 8.0),
             ElevatedButton(
               onPressed: () {
                 SettingPresenter.updateIntroduction(textController.text)
@@ -125,6 +127,7 @@ class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                       isShowMessage = false;
+                                      ckeditorIframe?.contentWindow?.postMessage(textController.text, '*');
                                       setState(() {});
                                     },
                                     child: const Text('OK'),

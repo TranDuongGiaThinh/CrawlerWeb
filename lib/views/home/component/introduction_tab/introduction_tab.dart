@@ -31,8 +31,10 @@ class _IntroductionTabState extends State<IntroductionTab> {
           )
         : Padding(
             padding: const EdgeInsets.all(8.0),
-            child: HtmlWidget(
-              introduction!,
+            child: SingleChildScrollView(
+              child: HtmlWidget(
+                introduction!,
+              ),
             ),
           );
   }
