@@ -29,18 +29,16 @@ class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
       ..style.height = '100%'
       ..tabIndex = 0
       ..onLoad.listen((event) {
-        if (userTypes.isEmpty) {
-          if (isLoading) return;
-          isLoading = true;
-          SettingPresenter.loadIntroduction().then((value) {
-            if (!mounted) return;
-            setState(() {
-              textController.text = value;
-            });
-            isLoading = false;
-            ckeditorIframe?.contentWindow?.postMessage(value, '*');
+        if (isLoading) return;
+        isLoading = true;
+        SettingPresenter.loadIntroduction().then((value) {
+          if (!mounted) return;
+          setState(() {
+            textController.text = value;
           });
-        }
+          isLoading = false;
+          ckeditorIframe?.contentWindow?.postMessage(value, '*');
+        });
       });
 
     platformViewRegistry.registerViewFactory(
@@ -54,7 +52,8 @@ class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
       if (event.data == null) return;
       if (!mounted) return;
       setState(() {
-        textController.text = event.data.replaceAll(RegExp(r'>\s+<'), '><') ?? '';
+        textController.text =
+            event.data.replaceAll(RegExp(r'>\s+<'), '><') ?? '';
       });
     });
   }
@@ -127,7 +126,9 @@ class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                       isShowMessage = false;
-                                      ckeditorIframe?.contentWindow?.postMessage(textController.text, '*');
+                                      ckeditorIframe?.contentWindow
+                                          ?.postMessage(
+                                              textController.text, '*');
                                       setState(() {});
                                     },
                                     child: const Text('OK'),
