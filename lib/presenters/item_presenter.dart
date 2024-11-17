@@ -51,8 +51,6 @@ class ItemPresenter {
 
   getCheckBoxData(Function reload) async {
     try {
-      if (isLoading) return;
-      isLoading = true;
       await fetchCheckBoxDataFromAPI(
         "$getAllConfigOfUserAPI${userLogin!.id}",
         'configs',
@@ -79,7 +77,6 @@ class ItemPresenter {
         },
       );
       reload();
-      isLoading = false;
     } catch (error) {
       configItems = [];
       itemTypes = [];
@@ -87,7 +84,6 @@ class ItemPresenter {
       if (kDebugMode) {
         print(error);
       }
-      isLoading = false;
     }
   }
 

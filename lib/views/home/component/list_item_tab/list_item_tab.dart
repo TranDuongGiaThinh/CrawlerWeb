@@ -17,13 +17,9 @@ class ListItemTabState extends State<ListItemTab> {
   void initState() {
     super.initState();
 
-    isLoading = true;
-
     if (items.isEmpty && userLogin != null) {
       itemPresenter.getAllItemOfUser(() {
-        setState(() {
-          isLoading = false;
-        });
+        setState(() {});
       });
     }
   }
