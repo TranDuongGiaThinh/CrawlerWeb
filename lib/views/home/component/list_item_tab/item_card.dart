@@ -35,20 +35,23 @@ class ItemCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 4),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: item.itemDetails.map((detail) {
-                return Padding(
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              for (int i = 0; i<item.itemDetails.length; i++)
+               Padding(
                   padding: const EdgeInsets.only(top: 4.0),
                   child: Text(
-                    "${detail.name}: ${detail.value}",
+                    "${item.itemDetails[i].name}: ${item.itemDetails[i].value}",
                     style: const TextStyle(
                       fontSize: 14,
                     ),
                   ),
-                );
-              }).toList(),
-            ),
+                ),
+              Text(
+                    "Cập nhật lúc: ${item.updateAt.toString()}",
+                    style: const TextStyle(
+                      fontSize: 14,
+                    ),),
+            ]),
           ],
         ),
       ),

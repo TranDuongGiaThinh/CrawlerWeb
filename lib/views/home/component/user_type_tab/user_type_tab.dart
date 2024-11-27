@@ -17,9 +17,10 @@ class _UserTypeTabState extends State<UserTypeTab> {
     if (isLoading) return;
     isLoading = true;
     userTypePresenter.getAllUserTypes().then((value) {
-      setState(() {
-        userTypes = value;
-      });
+      userTypes = value;
+      if (mounted) {
+        setState(() {});
+      }
       isLoading = false;
     });
   }
@@ -47,7 +48,9 @@ class _UserTypeTabState extends State<UserTypeTab> {
                     checked: false,
                     onClick: () {
                       userTypePresenter.onClickItem(context, userType, () {
-                        setState(() {});
+                        if (mounted) {
+                          setState(() {});
+                        }
                       });
                     },
                   );

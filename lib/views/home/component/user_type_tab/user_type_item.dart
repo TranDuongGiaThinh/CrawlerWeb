@@ -68,22 +68,26 @@ class UserTypeItem extends StatelessWidget {
                   Text(
                     item.description,
                     style: const TextStyle(fontSize: 16),
+                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 4),
                   if (item.maxConfig > 0)
                     Text(
                       '${item.maxConfig} lượt tạo cấu hình',
                       style: const TextStyle(fontSize: 16),
+                      textAlign: TextAlign.center,
                     ),
                   if (item.maxAutoConfig > 0)
                     Text(
                       '${item.maxAutoConfig} cấu hình thu thập tự động',
                       style: const TextStyle(fontSize: 16),
+                      textAlign: TextAlign.center,
                     ),
                   if (item.maxExport > 0)
                     Text(
                       '${item.maxExport} lượt xuất dữ liệu thu thập',
                       style: const TextStyle(fontSize: 16),
+                      textAlign: TextAlign.center,
                     ),
                 ],
               ),

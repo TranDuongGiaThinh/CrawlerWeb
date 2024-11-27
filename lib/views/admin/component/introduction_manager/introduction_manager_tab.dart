@@ -16,7 +16,7 @@ class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
   TextEditingController textController = TextEditingController();
   bool isShowMessage = false;
   bool onTextfield = false;
-  IFrameElement? ckeditorIframe;
+  static IFrameElement? ckeditorIframe;
 
   @override
   void initState() {
@@ -56,6 +56,14 @@ class _IntroductionManagerTabState extends State<IntroductionManagerTab> {
             event.data.replaceAll(RegExp(r'>\s+<'), '><') ?? '';
       });
     });
+
+    if (introduction != null) {
+      if (!mounted) return;
+      setState(() {
+        textController.text = introduction!;
+      });
+      ckeditorIframe?.contentWindow?.postMessage(introduction, '*');
+    }
   }
 
   @override

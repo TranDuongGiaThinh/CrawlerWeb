@@ -19,7 +19,9 @@ class ListItemTabState extends State<ListItemTab> {
 
     if (items.isEmpty && userLogin != null) {
       itemPresenter.getAllItemOfUser(() {
-        setState(() {});
+        if (mounted) {
+          setState(() {});
+        }
       });
     }
   }

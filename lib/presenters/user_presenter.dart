@@ -28,9 +28,12 @@ class UserPresenter {
     if (message.isEmpty) {
       UserModel? user = await checkLogin(reload);
 
+      cleanText();
+
       return user;
     }
 
+    cleanText();
     return null;
   }
 
@@ -137,6 +140,7 @@ class UserPresenter {
 
     UserModel? user = await createUser(reload);
 
+    cleanText();
     return user;
   }
 
